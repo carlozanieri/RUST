@@ -3,44 +3,51 @@ use sqlx::postgres::PgPoolOptions;
 use sqlx::PgPool;
 use serde::{Serialize, Deserialize};
 use tower_http::cors::CorsLayer;
+use tower_http::services::ServeDir; // <--- Aggiunto questo
 
 #[derive(Serialize, Deserialize, Debug, sqlx::FromRow)]
 pub struct Slider {
-pub id: i64,
-pub img: String,
-pub titolo: String,
-pub testo: String,
-pub caption: String,
+    pub id: i64,
+    pub img: String, // Questo è il campo 'immagineUrl' nel tuo modello Dart
+    pub titolo: String,
+    pub testo: String,
+    pub caption: String,
 }
 
 #[tokio::main]
 async fn main() {
-// Ricordati di mettere le tue credenziali reali qui
-let db_url = "postgres://carlo:treX39@57.131.31.228:5432/casabaldini";
+    let db_url = "postgres://carlo:treX39@57.131.31.228:5432/casabaldini";
 
-let pool = PgPoolOptions::new()
-.max_connections(5)
-.connect(db_url)
-.await
-.expect("Errore di connessione al database");
+    let pool = PgPoolOptions::new()
+        .max_connections(5)
+        .connect(db_url)
+        .await
+        .expect("Errore di connessione al database");
 
-let app = Router::new()
-.route("/api/v1/slider", get(get_sliders))
-.layer(CorsLayer::permissive())
-.with_state(pool);
+    // Definiamo la rotta per i file statici
+    // ServeDir::new("static") dice ad Axum di guardare nella cartella ./static
+    let static_files_service = ServeDir::new("static");
 
-let listener = tokio::net::TcpListener::bind("0.0.0.0:3333").await.unwrap();
-println!("🚀 API Mobile partita su http://localhost:3333");
-axum::serve(listener, app).await.unwrap();
+    let app = Router::new()
+        .route("/api/v1/slider", get(get_sliders))
+        // Questa riga dice: "Tutto ciò che arriva a /static, cercalo nella cartella static"
+        .nest_service("/static", static_files_service) 
+        .layer(CorsLayer::permissive())
+        .with_state(pool);
+
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:3333").await.unwrap();
+    println!("🚀 API Mobile partita su http://json.casabaldini.eu");
+    println!("📂 Immagini servite su http://json.casabaldini.eu/static/img/index/");
+    
+    axum::serve(listener, app).await.unwrap();
 }
 
-// Questa è la funzione che mancava o che il compilatore non trovava:
 async fn get_sliders(State(pool): State<PgPool>) -> Result<Json<Vec<Slider>>, (axum::http::StatusCode, String)> {
-let res = sqlx::query_as::<_, Slider>("SELECT id, titolo, img, testo, caption FROM sliders")
-.fetch_all(&pool)
-.await
-.map_err(|e| (axum::http::StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    // Nota: Ho aggiunto 'img' nella query perché il tuo modello Rust lo richiede
+    let res = sqlx::query_as::<_, Slider>("SELECT id, img, titolo, testo, caption FROM sliders")
+        .fetch_all(&pool)
+        .await
+        .map_err(|e| (axum::http::StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
 
-Ok(Json(res))
+    Ok(Json(res))
 }
-
