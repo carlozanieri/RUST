@@ -1,0 +1,158 @@
+Ti mostro un piccolo progetto Dioxus (desktop) organizzato in più file, con:
+separazione in moduli
+passaggio di props tra componenti
+funzioni che restituiscono valori
+una piccola “logica di business” separata dalla UI
+📦 Struttura del progetto
+Copia codice
+
+dioxus-multi-file/
+│
+├── Cargo.toml
+└── src/
+    ├── main.rs
+    ├── app.rs
+    ├── components/
+    │   ├── mod.rs
+    │   ├── counter.rs
+    │   └── controls.rs
+    └── utils/
+        ├── mod.rs
+        └── math.rs
+Cargo.toml
+Copia codice
+Toml
+[package]
+name = "dioxus-multi-file"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dioxus = { version = "0.5", features = ["desktop"] }
+main.rs
+Qui avviamo solo l’app, niente logica dentro.
+Copia codice
+Rust
+mod app;
+mod components;
+mod utils;
+
+use dioxus::prelude::*;
+
+fn main() {
+    dioxus::launch(app::App);
+}
+app.rs
+Componente principale che gestisce lo stato e passa valori ai figli.
+Copia codice
+Rust
+use dioxus::prelude::*;
+use crate::components::counter::Counter;
+use crate::utils::math::compute_double;
+
+#[component]
+pub fn App() -> Element {
+    let mut count = use_signal(|| 0);
+
+    let doubled = compute_double(count());
+
+    rsx! {
+        div {
+            h1 { "Contatore modulare Dioxus" }
+
+            Counter {
+                value: count(),
+                on_increment: move || count += 1,
+                on_decrement: move || count -= 1,
+            }
+
+            p { "Valore raddoppiato (calcolato in utils): {doubled}" }
+        }
+    }
+}
+components/mod.rs
+Serve per esportare i sotto-moduli.
+Copia codice
+Rust
+pub mod counter;
+pub mod controls;
+components/counter.rs
+Riceve valori e callback dal parent.
+Copia codice
+Rust
+use dioxus::prelude::*;
+use crate::components::controls::Controls;
+
+#[derive(Props, PartialEq, Clone)]
+pub struct CounterProps {
+    pub value: i32,
+    pub on_increment: EventHandler<()>,
+    pub on_decrement: EventHandler<()>,
+}
+
+#[component]
+pub fn Counter(props: CounterProps) -> Element {
+    rsx! {
+        div {
+            h2 { "Valore corrente: {props.value}" }
+
+            Controls {
+                on_increment: props.on_increment,
+                on_decrement: props.on_decrement,
+            }
+        }
+    }
+}
+components/controls.rs
+Separiamo ancora la UI.
+Copia codice
+Rust
+use dioxus::prelude::*;
+
+#[derive(Props, PartialEq, Clone)]
+pub struct ControlsProps {
+    pub on_increment: EventHandler<()>,
+    pub on_decrement: EventHandler<()>,
+}
+
+#[component]
+pub fn Controls(props: ControlsProps) -> Element {
+    rsx! {
+        div {
+            button {
+                onclick: move |_| props.on_increment.call(()),
+                "+"
+            }
+            button {
+                onclick: move |_| props.on_decrement.call(()),
+                "-"
+            }
+        }
+    }
+}
+utils/mod.rs
+Copia codice
+Rust
+pub mod math;
+utils/math.rs
+Qui mettiamo la logica pura separata dalla UI.
+Copia codice
+Rust
+pub fn compute_double(value: i32) -> i32 {
+    value * 2
+}
+🔁 Cosa stiamo dimostrando
+✔ Separazione in moduli
+✔ Passaggio valori tramite Props
+✔ Callback verso il parent
+✔ Funzione che restituisce un valore (compute_double)
+✔ UI separata dalla logica
+💡 Variante più “enterprise”
+Se vuoi posso mostrarti anche:
+gestione stato globale con Context
+separazione in cartelle tipo domain/, infrastructure/
+pattern tipo MVU
+esempio con fetch asincrono
+esempio Web invece che Desktop
+esempio con router
+Dimmi che tipo di architettura stavi costruendo e lo modelliamo su quello.

@@ -1,0 +1,7 @@
+mkdir -p db_remoto
+
+sshfs carlo@57.131.31.228:/home/carlo/progetti_rust/test/ /home/carlo/db_remoto/
+
+in main.rs:
+
+let pool = SqlitePool::connect("sqlite:/home/carlo/db_remoto/casabaldini.sqlite").await

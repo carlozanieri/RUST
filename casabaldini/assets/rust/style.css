@@ -1,0 +1,24 @@
+.slider-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.slide-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.slide-card:hover {
+    transform: translateY(-5px);
+}
+
+.slide-card img {
+    object-fit: cover;
+    height: 300px; /* Altezza fissa per uniformità */
+}
+

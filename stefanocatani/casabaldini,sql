@@ -1,0 +1,501 @@
+--
+-- File generated with SQLiteStudio v3.4.21 on ven feb 6 14:33:53 2026
+--
+-- Text encoding used: UTF-8
+--
+PRAGMA foreign_keys = off;
+BEGIN TRANSACTION;
+
+-- Table: auth_group
+CREATE TABLE IF NOT EXISTS "auth_group" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(150) NOT NULL UNIQUE);
+
+-- Table: auth_group_permissions
+CREATE TABLE IF NOT EXISTS "auth_group_permissions" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "group_id" integer NOT NULL REFERENCES "auth_group" ("id") DEFERRABLE INITIALLY DEFERRED, "permission_id" integer NOT NULL REFERENCES "auth_permission" ("id") DEFERRABLE INITIALLY DEFERRED);
+
+-- Table: auth_permission
+CREATE TABLE IF NOT EXISTS "auth_permission" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "content_type_id" integer NOT NULL REFERENCES "django_content_type" ("id") DEFERRABLE INITIALLY DEFERRED, "codename" varchar(100) NOT NULL, "name" varchar(255) NOT NULL);
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (1, 1, 'add_menuweb', 'Can add menuweb');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (2, 1, 'change_menuweb', 'Can change menuweb');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (3, 1, 'delete_menuweb', 'Can delete menuweb');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (4, 1, 'view_menuweb', 'Can view menuweb');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (5, 2, 'add_blog', 'Can add blog');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (6, 2, 'change_blog', 'Can change blog');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (7, 2, 'delete_blog', 'Can delete blog');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (8, 2, 'view_blog', 'Can view blog');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (9, 3, 'add_entries', 'Can add entries');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (10, 3, 'change_entries', 'Can change entries');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (11, 3, 'delete_entries', 'Can delete entries');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (12, 3, 'view_entries', 'Can view entries');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (13, 4, 'add_entrieshome', 'Can add entries home');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (14, 4, 'change_entrieshome', 'Can change entries home');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (15, 4, 'delete_entrieshome', 'Can delete entries home');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (16, 4, 'view_entrieshome', 'Can view entries home');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (17, 5, 'add_slider', 'Can add slider');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (18, 5, 'change_slider', 'Can change slider');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (19, 5, 'delete_slider', 'Can delete slider');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (20, 5, 'view_slider', 'Can view slider');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (21, 6, 'add_links', 'Can add links');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (22, 6, 'change_links', 'Can change links');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (23, 6, 'delete_links', 'Can delete links');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (24, 6, 'view_links', 'Can view links');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (25, 7, 'add_logentry', 'Can add log entry');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (26, 7, 'change_logentry', 'Can change log entry');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (27, 7, 'delete_logentry', 'Can delete log entry');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (28, 7, 'view_logentry', 'Can view log entry');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (29, 8, 'add_permission', 'Can add permission');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (30, 8, 'change_permission', 'Can change permission');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (31, 8, 'delete_permission', 'Can delete permission');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (32, 8, 'view_permission', 'Can view permission');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (33, 9, 'add_group', 'Can add group');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (34, 9, 'change_group', 'Can change group');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (35, 9, 'delete_group', 'Can delete group');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (36, 9, 'view_group', 'Can view group');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (37, 10, 'add_user', 'Can add user');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (38, 10, 'change_user', 'Can change user');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (39, 10, 'delete_user', 'Can delete user');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (40, 10, 'view_user', 'Can view user');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (41, 11, 'add_contenttype', 'Can add content type');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (42, 11, 'change_contenttype', 'Can change content type');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (43, 11, 'delete_contenttype', 'Can delete content type');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (44, 11, 'view_contenttype', 'Can view content type');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (45, 12, 'add_session', 'Can add session');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (46, 12, 'change_session', 'Can change session');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (47, 12, 'delete_session', 'Can delete session');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (48, 12, 'view_session', 'Can view session');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (49, 13, 'add_food', 'Can add food');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (50, 13, 'change_food', 'Can change food');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (51, 13, 'delete_food', 'Can delete food');
+INSERT INTO auth_permission (id, content_type_id, codename, name) VALUES (52, 13, 'view_food', 'Can view food');
+
+-- Table: auth_user
+CREATE TABLE IF NOT EXISTS "auth_user" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "password" varchar(128) NOT NULL, "last_login" datetime NULL, "is_superuser" bool NOT NULL, "username" varchar(150) NOT NULL UNIQUE, "last_name" varchar(150) NOT NULL, "email" varchar(254) NOT NULL, "is_staff" bool NOT NULL, "is_active" bool NOT NULL, "date_joined" datetime NOT NULL, "first_name" varchar(150) NOT NULL);
+INSERT INTO auth_user (id, password, last_login, is_superuser, username, last_name, email, is_staff, is_active, date_joined, first_name) VALUES (1, 'pbkdf2_sha256$870000$71CMWMTtJNZ9DPMinxC01H$YQtIv6VU6Yovw1A2vUUzDGk/ID758tM6O1X2LK3uBZY=', '2025-02-03 23:43:32.362691', 1, 'carlo', '', 'carlo.zanieri@gmail.com', 1, 1, '2025-02-03 23:42:49.960512', '');
+
+-- Table: auth_user_groups
+CREATE TABLE IF NOT EXISTS "auth_user_groups" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "user_id" integer NOT NULL REFERENCES "auth_user" ("id") DEFERRABLE INITIALLY DEFERRED, "group_id" integer NOT NULL REFERENCES "auth_group" ("id") DEFERRABLE INITIALLY DEFERRED);
+
+-- Table: auth_user_user_permissions
+CREATE TABLE IF NOT EXISTS "auth_user_user_permissions" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "user_id" integer NOT NULL REFERENCES "auth_user" ("id") DEFERRABLE INITIALLY DEFERRED, "permission_id" integer NOT NULL REFERENCES "auth_permission" ("id") DEFERRABLE INITIALLY DEFERRED);
+
+-- Table: beb_blog
+CREATE TABLE IF NOT EXISTS "beb_blog" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "author_id" integer NOT NULL, "title" varchar(512) NOT NULL, "markdown" varchar(255) NOT NULL, "html" varchar(512) NOT NULL, "published" datetime NOT NULL, "updated" datetime NOT NULL, "img" varchar(100) NOT NULL, "dir" varchar(100) NOT NULL, "html2" varchar(255) NOT NULL, "html3" varchar(255) NOT NULL, "img2" varchar(100) NOT NULL, "img3" varchar(100) NOT NULL);
+INSERT INTO beb_blog (id, author_id, title, markdown, html, published, updated, img, dir, html2, html3, img2, img3) VALUES (1, 1, 'Prestige 1', 'Un ricco programma che accompagnerà sanpierini e visitatori da giugno a settembre, nel segno dell’arte, come occasione di ripartenza. E’ davvero ricco il programma di “Venerdì a Villa Adami”, l’iniziativa proposta dalla locale Pro Loco e dal “CCN de’ Medici”, che valorizzerà una delle aree più belle di San Piero a Sieve. Il tutto per dimostrare la propria voglia di non fermarsi, di andare avanti, ma tutto nel rispetto delle norme e senza prendere rischi per spettatori e partecipanti. Una manifestazione che ha avuto il patrocinio del Comune di Scarperia e San Piero ', 'Un ricco programma che accompagnerà sanpierini e visitatori da giugno a settembre, nel segno dell’arte, come occasione di ripartenza. E’ davvero ricco il programma di “Venerdì a Villa Adami”, l’iniziativa proposta dalla locale Pro Loco e dal “CCN de’ Medici”, che valorizzerà una delle aree più belle di San Piero a Sieve. Il tutto per dimostrare la propria voglia di non fermarsi, di andare avanti, ma tutto nel rispetto delle norme e senza prendere rischi per spettatori e partecipanti. Una manifestazione che ha avuto il patrocinio del Comune di Scarperia e San Piero
+
+Il primo appuntamento previsto è per venerdì 18 Giugno, con “Francesco Nuti. Andata, caduta e ritorno”, scritto e diretto da Valerio Groppa, con Nicola Pecci, le musiche di Giovanni e Francesco Nuti, tratto dall''autobiografia di Francesco Nuti "Sono un bravo ragazzo". Sabato 19 Giugno (alle 17) sarà la volta di “Dante e il Mugello”: Carlo Forasassi conversa con il Dott. Fabrizio Boni, a 700 anni dalla morte di Dante, ad ingresso gratuito. Venerdì 25 Giugno musica protagonista con “Jazz standard band”, con un trio di eccezione composto da Franco Baggiani alla tromba, Alessandro Bruno alla chitarra e Alessandro Geri al contrabbasso. Il giorno seguente sarà la volta del concerto dei “Polimeri Variabili”, con musica prevalentemente funky. Luglio si aprirà il 2 con “I Geneticamente mortificati” in “Restauration. Siamo tornati di moda” monologo imperfetto sull''attualità, scritto da Marco Giavatto e diretto da Fulvio Ferrati. Si proseguirà venerdì 9 Luglio
+
+con “Piccoli crimini coniugali” di Eric Emmanuel Schmitt con Fabrizio Pinzauti e Rosanna Reccia ed il 16 con “La Divina Commedia in 100 luoghi - Inferno Canto XV” performance di Matteo Fratarcangeli. Venerdì 23 Luglio “Musica 60-70-80-90 con Altri Tempi” ad ingresso gratuito ed a chiuder e il mese, il 30, “Dante. Viaggio dentro e intorno alla Divina Commedia” con Gianluigi Tosto. Due gli appuntamenti in agosto: il 6 con “Itaglia” con Matteo Procuranti e Silvia Cuncu per la regia di Virginia Martini ed il 27 “Alla radio con Čechov si può anche ridere” da un''idea di Pietro Venè, con I Pinguini e la regia di Pietro Venè e Cristina Bacci. Venerdì 3 Settembre “New Orleans history” quintetto di fiati e percussioni ed a chiudere, ad ingresso gratuito, venerdì 10 Settembre “Musica dal vivo” con Ivo e Sofia.
+
+“Si tratta di un programma che spazia tra arti e generi molto diversi, spiega soddisfatto il presidente della Pro Loco di San Piero, Sauro Bani, che abbiamo cercato di mettere insieme per accontentare gusti e persone differenti. C’era bisogno di qualcosa che, in sicurezza, ridesse vita alle arti e possibilità di aggregarsi. L’esperienza molto positiva in Villa Adami dello scorso anno ci ha spinto a far crescere questa idea ed a riproporla, diversificando le possibilità di quello che è uno dei luoghi di ritrovo più belli e caratteristici del nostro paese.”
+
+L’accesso, regolamentato, agli spettacoli, avrà un costo di 8 euro a serata (4 euro il ridotto) tranne alcuni appuntamenti ove sia indicato specificatamente l’ingresso gratuito. Le serate, che saranno singolarmente annullate in caso di maltempo, hanno inizio alle 21, prevedono una prenotazione obbligatoria per mail a   prolocosanpieroasieve@gmail.com o attraverso whatsapp al 3382562225 o al 3311090673.', '2022-05-09 17:53:34', '2022-05-09 17:53:34', 'prestige1.jpg', '/blogs/img', 'Un ricco programma che accompagnerà sanpierini e visitatori da giugno a settembre, nel segno dell’arte, come occasione di ripartenza...
+', 'Un ricco programma che accompagnerà sanpierini e visitatori da giugno a settembre, nel segno dell’arte, come occasione di ripartenza. E’ davvero ricco il programma di “Venerdì a Villa Adami”, l’iniziativa proposta dalla locale Pro Loco e dal “CCN de’ Medici”, che valorizzerà una delle aree più belle di San Piero a Sieve. Il tutto per dimostrare la propria voglia di non fermarsi, di andare avanti, ma tutto nel rispetto delle norme e senza prendere rischi per spettatori e partecipanti. Una manifestazione che ha avuto il patrocinio del Comune di Scarperia e San Piero ', 'Villa Adami Venerdi 2021.jpg', 'Villa Adami Venerdi 2021.jpg');
+INSERT INTO beb_blog (id, author_id, title, markdown, html, published, updated, img, dir, html2, html3, img2, img3) VALUES (2, 1, 'Prestige 2', 'Si è aperto il bando per il 17° Simposio dedicato allo scultore Antonio Berti', 'Dal 14 al 25 settembre San Piero a Sieve ospiterà la diciassettesima edizione del Simposio di Scultura "Premio Antonio Berti", evento biennale dedicato all''arte che vede coinvolti gli studenti delle più importanti Accademie di Belle Arti italiane ed europee che si sfideranno a “colpi di scalpello” nel parco dedicato proprio all’artista sanpierino (nell’anno in cui la cittadina sarà ufficialmente “intitolata” con la posa di cartelli all’ingresso del centro abitato con su scritto “paese natale di Antonio Berti”).
+
+La manifestazione, promossa dalla Proloco di San Piero a Sieve, con il Patrocinio del Comune di Scarperia e San Piero e della Regione Toscana e con la collaborazione dell''Accademia di Belle Arti di Firenze e di quella di Carrara, il Comune di Firenzuola, l''Unione Montana dei Comuni del Mugello e la Fondazione per la Scultura Antonio Berti, vede il coinvolgimento anche dell’Ente Cassa di Risparmio di Firenze che ha finanziato il progetto di simposio e del percorso ad esso correlato. Il Simposio di Scultura nasce dalla volontà di rendere omaggio alla figura del grande scultore e conterraneo Antonio Berti, profondamente legato alla sua terra. ', '2022-05-09 21:29:38', '2022-05-09 21:29:38', 'prestige2.jpg', '/blogs/img', 'Per dieci giorni i sei studenti realizzano opere scultoree contemporanee, a tema libero, utilizzando blocchi di pietra serena, grazie al Copser, provenienti dalle cave di Firenzuola (che ospiteranno, in uno dei giorni del Simposio, ', 'La novità di quest’anno sarà la creazione di una categoria speciale, che quest’anno sarà dedicata ai 700 anni dalla morte di Dante, a cui un artista, invitato fra chi ha partecipato in questi anni (e sono oltre 100), dovrà ispirarsi per scolpire un’opera più grande delle altre, fuori concorso, con 15 giorni a disposizione.
+
+Molte delle sculture realizzate nelle precedenti edizioni hanno trovato collocazione nel tessuto urbano di San Piero a Sieve, valorizzandone parchi, piazze e giardini. E questo ha dato vita all’idea del percorso che finalmente dovrebbe trovare un compimento. La Pro Loco, insieme con il Centro Commerciale de'' Medici, ha creato un progetto che intende valorizzare l''abitato di San Piero a Sieve, già ricco di beni architettonici e storici di rilievo, attraverso la collocazione delle opere realizzate in questi anni. Lo sviluppo di tale percorso, che unirà in particolare la Stazione di San Piero con lo stesso Parco Berti, prevede la riqualificazione delle aree interessate e la collocazione di cartellonistica che, oltre ad indicare il percorso, guidi il visitatore alla scoperta degli angoli più suggestivi del paese: la Pieve millenaria dedicata a San Pietro, la Fortezza di San Martino, Villa Adami, Villa Schifanoia, la Torre medicea di Scoronconcolo, guidati in un percorso ideale che ha le sculture di pietra come filo conduttore. Un progetto ambizioso, ma già ben avviato, nel quale la Pro Loco crede molto.
+
+“Quest’anno, spiega il presidente della Pro Loco sanpierina, Sauro Bani, si fa un ulteriore salto di qualità dando impulso al Simposio, e partendo con il percorso, attraverso il tessuto urbano sanpierino, e con questa nuova sezione, con un artista affermato e che già a San Piero ha dimostrato il suo valore, volgiamo rafforzare il legame di San Piero con la scultura e l’arte, cosa che cerchiamo di far emergere da tutte le nostre iniziative.”', 'simposio5.jpg', 'simposio 4.jpg');
+INSERT INTO beb_blog (id, author_id, title, markdown, html, published, updated, img, dir, html2, html3, img2, img3) VALUES (3, 2, 'Prestige 3', 'a', '2	1	Si è aperto il bando per il 17° Simposio dedicato allo scultore Antonio Berti	Si è aperto il bando per il 17° Simposio dedicato allo scultore Antonio Berti	Si è aperto il bando per il 17° Simposio dedicato allo scultore Antonio Berti	"Dal 14 al 25 settembre San Piero a Sieve ospiterà la diciassettesima edizione del Simposio di Scultura "Premio Antonio Berti", evento biennale dedicato all''arte che vede coinvolti gli studenti delle più importanti Accademie di Belle Arti italiane ed europee che si sfideranno a “colpi di scalpello” nel parco dedicato proprio all’artista sanpierino (nell’anno in cui la cittadina sarà ufficialmente “intitolata” con la posa di cartelli all’ingresso del centro abitato con su scritto “paese natale di Antonio Berti”).
+
+La manifestazione, promossa dalla Proloco di San Piero a Sieve, con il Patrocinio del Comune di Scarperia e San Piero e della Regione Toscana e con la collaborazione dell''Accademia di Belle Arti di Firenze e di quella di Carrara, il Comune di Firenzuola, l''Unione Montana dei Comuni del Mugello e la Fondazione per la Scultura Antonio Berti, vede il coinvolgimento anche dell’Ente Cassa di Risparmio di Firenze che ha finanziato il progetto di simposio e del percorso ad esso correlato. Il Simposio di Scultura nasce dalla volontà di rendere omaggio alla figura del grande scultore e conterraneo Antonio Berti, profondamente legato alla sua terra. "	2021-06-08 00:00:00	2021-06-10 22:25:38	simposio 4.jpg	/news/img	"Per dieci giorni i sei studenti realizzano opere scultoree contemporanee, a tema libero, utilizzando blocchi di pietra serena, grazie al Copser, provenienti dalle cave di Firenzuola (che ospiteranno, in uno dei giorni del Simposio, una visita guidata degli artisti, alcuni scatti dei quali saranno poi presentati in occasione della premiazione), lavorando presso il laboratorio all''aperto allestito presso il Parco Antonio Berti, dove sarà possibile vederli all''opera per tutta la durata della manifestazione. Per partecipare è appena aperto il bando, con scadenza sabato 26 giugno. Gli artisti ammessi, dopo una valutazione di una apposita commissione artistica che vede anche professori delle Accademie, guidati in particolare dal professor Di Tommaso dell''Accademia delle Belle Arti di Firenze, saranno ospitati per l’intera durata della manifestazione dal Camping Village Mugello Verde. L''atmosfera è unica: una nube di polvere bianca, dovuta alla lavorazione della pietra con mola e scalpelli, avvolge gli scultori concentrati nel tirar fuori in poco tempo un''opera di grande impatto visivo ed emotivo. Anche molto spettacolare, tanto è vero che, insieme ad Unione dei Comuni, è stato intrapreso un percorso di coinvolgimento dei plessi scolastici delle scuole medie inferiori e superiori del territorio, con apposite visite guidate. L’accesso per il pubblico è ovviamente libero.
+
+simposio5"	"La novità di quest’anno sarà la creazione di una categoria speciale, che quest’anno sarà dedicata ai 700 anni dalla morte di Dante, a cui un artista, invitato fra chi ha partecipato in questi anni (e sono oltre 100), dovrà ispirarsi per scolpire un’opera più grande delle altre, fuori concorso, con 15 giorni a disposizione.
+
+Molte delle sculture realizzate nelle precedenti edizioni hanno trovato collocazione nel tessuto urbano di San Piero a Sieve, valorizzandone parchi, piazze e giardini. E questo ha dato vita all’idea del percorso che finalmente dovrebbe trovare un compimento. La Pro Loco, insieme con il Centro Commerciale de'' Medici, ha creato un progetto che intende valorizzare l''abitato di San Piero a Sieve, già ricco di beni architettonici e storici di rilievo, attraverso la collocazione delle opere realizzate in questi anni. Lo sviluppo di tale percorso, che unirà in particolare la Stazione di San Piero con lo stesso Parco Berti, prevede la riqualificazione delle aree interessate e la collocazione di cartellonistica che, oltre ad indicare il percorso, guidi il visitatore alla scoperta degli angoli più suggestivi del paese: la Pieve millenaria dedicata a San Pietro, la Fortezza di San Martino, Villa Adami, Villa Schifanoia, la Torre medicea di Scoronconcolo, guidati in un percorso ideale che ha le sculture di pietra come filo conduttore. Un progetto ambizioso, ma già ben avviato, nel quale la Pro Loco crede molto.
+
+“Quest’anno, spiega il presidente della Pro Loco sanpierina, Sauro Bani, si fa un ulteriore salto di qualità dando impulso al Simposio, e partendo con il percorso, attraverso il tessuto urbano sanpierino, e con questa nuova sezione, con un artista affermato e che già a San Piero ha dimostrato il suo valore, volgiamo rafforzare il legame di San Piero con la scultura e l’arte, cosa che cerchiamo di far emergere da tutte le nostre iniziative.”"	simposio5.jpg	simposio 4.jpg', '2022-05-09 21:31:13', '2022-05-09 21:31:13', 'prestige3.jpg', '/blogs/img', 'Si è aperto il bando per il 17° Simposio dedicato allo scultore Antonio Berti	Si è aperto il bando per il 17° Simposio dedicato allo scultore Antonio Berti	"Dal 14 al 25 settembre San Piero a Sieve ospiterà la diciassettesima edizione del Simposio di Scultura "Premio Antonio Berti",', '2	1	Si è aperto il bando per il 17° Simposio dedicato allo scultore Antonio Berti	Si è aperto il bando per il 17° Simposio dedicato allo scultore Antonio Berti	Si è aperto il bando per il 17° Simposio dedicato allo scultore Antonio Berti	"Dal 14 al 25 settembre San Piero a Sieve ospiterà la diciassettesima edizione del Simposio di Scultura "Premio Antonio Berti", evento biennale dedicato all''arte che vede coinvolti gli studenti delle più importanti Accademie di Belle Arti italiane ed europee che si sfideranno a “colpi di scalpello” nel parco dedicato proprio all’artista sanpierino (nell’anno in cui la cittadina sarà ufficialmente “intitolata” con la posa di cartelli all’ingresso del centro abitato con su scritto “paese natale di Antonio Berti”).
+
+La manifestazione, promossa dalla Proloco di San Piero a Sieve, con il Patrocinio del Comune di Scarperia e San Piero e della Regione Toscana e con la collaborazione dell''Accademia di Belle Arti di Firenze e di quella di Carrara, il Comune di Firenzuola, l''Unione Montana dei Comuni del Mugello e la Fondazione per la Scultura Antonio Berti, vede il coinvolgimento anche dell’Ente Cassa di Risparmio di Firenze che ha finanziato il progetto di simposio e del percorso ad esso correlato. Il Simposio di Scultura nasce dalla volontà di rendere omaggio alla figura del grande scultore e conterraneo Antonio Berti, profondamente legato alla sua terra. "	2021-06-08 00:00:00	2021-06-10 22:25:38	simposio 4.jpg	/news/img	"Per dieci giorni i sei studenti realizzano opere scultoree contemporanee, a tema libero, utilizzando blocchi di pietra serena, grazie al Copser, provenienti dalle cave di Firenzuola (che ospiteranno, in uno dei giorni del Simposio, una visita guidata degli artisti, alcuni scatti dei quali saranno poi presentati in occasione della premiazione), lavorando presso il laboratorio all''aperto allestito presso il Parco Antonio Berti, dove sarà possibile vederli all''opera per tutta la durata della manifestazione. Per partecipare è appena aperto il bando, con scadenza sabato 26 giugno. Gli artisti ammessi, dopo una valutazione di una apposita commissione artistica che vede anche professori delle Accademie, guidati in particolare dal professor Di Tommaso dell''Accademia delle Belle Arti di Firenze, saranno ospitati per l’intera durata della manifestazione dal Camping Village Mugello Verde. L''atmosfera è unica: una nube di polvere bianca, dovuta alla lavorazione della pietra con mola e scalpelli, avvolge gli scultori concentrati nel tirar fuori in poco tempo un''opera di grande impatto visivo ed emotivo. Anche molto spettacolare, tanto è vero che, insieme ad Unione dei Comuni, è stato intrapreso un percorso di coinvolgimento dei plessi scolastici delle scuole medie inferiori e superiori del territorio, con apposite visite guidate. L’accesso per il pubblico è ovviamente libero.
+
+simposio5"	"La novità di quest’anno sarà la creazione di una categoria speciale, che quest’anno sarà dedicata ai 700 anni dalla morte di Dante, a cui un artista, invitato fra chi ha partecipato in questi anni (e sono oltre 100), dovrà ispirarsi per scolpire un’opera più grande delle altre, fuori concorso, con 15 giorni a disposizione.
+
+Molte delle sculture realizzate nelle precedenti edizioni hanno trovato collocazione nel tessuto urbano di San Piero a Sieve, valorizzandone parchi, piazze e giardini. E questo ha dato vita all’idea del percorso che finalmente dovrebbe trovare un compimento. La Pro Loco, insieme con il Centro Commerciale de'' Medici, ha creato un progetto che intende valorizzare l''abitato di San Piero a Sieve, già ricco di beni architettonici e storici di rilievo, attraverso la collocazione delle opere realizzate in questi anni. Lo sviluppo di tale percorso, che unirà in particolare la Stazione di San Piero con lo stesso Parco Berti, prevede la riqualificazione delle aree interessate e la collocazione di cartellonistica che, oltre ad indicare il percorso, guidi il visitatore alla scoperta degli angoli più suggestivi del paese: la Pieve millenaria dedicata a San Pietro, la Fortezza di San Martino, Villa Adami, Villa Schifanoia, la Torre medicea di Scoronconcolo, guidati in un percorso ideale che ha le sculture di pietra come filo conduttore. Un progetto ambizioso, ma già ben avviato, nel quale la Pro Loco crede molto.
+
+“Quest’anno, spiega il presidente della Pro Loco sanpierina, Sauro Bani, si fa un ulteriore salto di qualità dando impulso al Simposio, e partendo con il percorso, attraverso il tessuto urbano sanpierino, e con questa nuova sezione, con un artista affermato e che già a San Piero ha dimostrato il suo valore, volgiamo rafforzare il legame di San Piero con la scultura e l’arte, cosa che cerchiamo di far emergere da tutte le nostre iniziative.”"	simposio5.jpg	simposio 4.jpg', 'simposio5.jpg', 'simposio5.jpg');
+
+-- Table: beb_entries
+CREATE TABLE IF NOT EXISTS "beb_entries" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "author_id" integer NOT NULL, "title" varchar(512) NOT NULL, "markdown" varchar(255) NOT NULL, "html" varchar(512) NOT NULL, "published" datetime NOT NULL, "updated" datetime NOT NULL, "img" varchar(100) NOT NULL, "dir" varchar(100) NOT NULL, "html2" varchar(255) NOT NULL, "html3" varchar(255) NOT NULL, "img2" varchar(100) NOT NULL, "img3" varchar(100) NOT NULL, "slug" varchar(100) NOT NULL);
+INSERT INTO beb_entries (id, author_id, title, markdown, html, published, updated, img, dir, html2, html3, img2, img3, slug) VALUES (1, 1, 'Questo è il secondo post', 'Questo è il secondo post di Carlo Zanieri.', 'SAN PIERO A SIEVE
+
+"Dove la più bassa gola della Carza stretta tra le pendici del Poggio del Trebbio e di Monte Cacioli si apre in un anfiteatro meraviglioso di poggi e su un più lontano aperto orizzonte si delinea l''unità cresta de l''Appennino e la alle della Sieve si slarga ad oriente; alla confluenza della Carza e della Sieve si sviluppa il borgo di San Piero a Sieve."
+
+Francesco Niccolai, 1914
+san-pietro 	
+STORIA
+
+Dopo aver lasciato i pendii settentrionali di Monte Morello si giunge a San Piero a Sieve, piccolo paese di origine medievale dal quale si estende la pianura mugellana, attraversata dalla Sieve, affluente dell''Arno.
+
+Il paese sorge proprio nel punto in cui il torrente Carza sfocia nella Sieve.
+
+Il borgo nasce come nodo stradale presso l''antico ponte sulla Sieve che conduceva, attraverso la via Bolognese, al Passo del Giogo. La sua importanza deriva infatti dalla strada postale che fino al XVIII secolo l''attraversava e che era l''unica che permetteva da Firenze di raggiungere Bologna.
+
+L''essere sempre stato un nodo viario di grande rilevanza è l''elemento che caratterizza la storia del paese fin dall''antichità.
+
+Le più antiche tracce di presenza umana nel territorio di San Piero risalgono al Paleolitico Medio. Nelle località di Lucigliano, Toro, Le Mozzette, San Giusto a Fortuna sono stati rinvenuti numerosi strumenti di pietra selce, come punte di lancia, raschiatoi, ecc...
+
+I ritrovamenti archeologici più importanti, però, sono quelli legati alla presenza degli Etruschi, che ci testimoniano la presenza di una società già organizzata in insediamenti stabili a carattere urbano.
+
+Uno dei segni più importanti della presenza etrusca a San Piero é la tomba arcaica delle Mozzette (databile tra il VII ed il VI secolo a.c.), della quale ormai restano visibili solo degli enormi pietroni. La successiva colonizzazione romana ha lasciato sul territorio una diffusa presenza, testimoniata nei nomi delle località e dai ritrovamenti archeologici.
+
+Il nome di San Piero a Sieve pare sia stato attribuito al borgo nel 1117, unendo la denominazione originaria del borgo "Villa Sevae" a quella della Pieve di San Pietro.
+
+Originariamente San Piero a Sieve apparteneva alla potente famiglia feudale degli Ubaldini da Coldaia. L''economia della comunità era esclusivamente rurale e la presenza di un mercato del bestiame favoriva il passaggio e la permanenza di genti. Successivamente i Medici entrarono in possesso di tutta la zona.
+
+San Piero a Sieve ricevette una spinta notevole in relazione all''operosità dei Medici: si ingrandì ed acquisì una certa importanza nel quadro politico mugellano, segnando anche un aumento della popolazione.
+
+Il transito di un numero sempre maggiore di persone rese necessaria la realizzazione di strutture destinate all''accoglienza ed all''ospitalità.
+
+Un''opera che riveste un grande valore strategico per la storia della comunità è la costruzione del ponte sulla Sieve, voluta e finanziata dalla Repubblica Fiorentina nel 1372 e realizzato dai famosi maestri muratori fiorentini Niccolò di Ciardo, Francesco Carletti e Giovanni Mercati.
+
+Fu così costruita una struttura in muratura che andava a sostituire quella in pietra e legname che fino ad allora aveva garantito il passaggio del fiume.
+
+
+', '2017-11-17 14:10:31', '2021-05-12 23:22:02', 'sapiero-storia-provinciale.JPG', 'img/', 'Con questo evento il borgo consolidò la propria funzione di mercatale e luogo di sosta per viaggiatori, commercianti e pellegrini.
+  	villa-adami-schifanoia-san-piero-a-sieve
+
+Tra il XIV ed il XV secolo San Piero a Sieve visse il suo momento di maggior prestigio, in relazione ai successi della politica medicea. Fu proprio un questo periodo che questi ultimi edificarono nei dintorni le loro ville - Cafaggiolo e il Trebbio - ed eressero abitazioni anche all''interno del paese: villa Adami e villa Schifanoia.
+  	fortezza-san-martino-storia
+
+Sul finire del XVI secolo Cosimo I de'' Medici ideò la costruzione della poderosa Fortezza di San Martino, realizzata sulla sommità del colle che domina il borgo.
+
+Dopo aver collaborato nel 1351 con Giovanni de'' Medici all''assedio di Scarperia, San Piero fu posta a capo della lega di Tagliaferro che univa tutti i popoli dell''area circostante.
+
+In concomitanza con la caduta dei Medici anche San Piero visse un lungo periodo di stagnazione socio-economica, fino alla fine del XIX secolo quando, con la costruzione della stazione ferroviaria, arrivarono i primi treni favorendo la circolazione di persone e merci.
+
+Per maggiori informazioni su San Piero a Sieve vi invitiamo a visitare il sito del Comune: www.comune.san-piero-a-sieve.fi.it', '', 'sapiero-storia-piazza.JPG', 'sapiero-storia-piazza.JPG', 'sanpiero');
+INSERT INTO beb_entries (id, author_id, title, markdown, html, published, updated, img, dir, html2, html3, img2, img3, slug) VALUES (2, 1, 'Terzo Post di carlo zanieri', 'Questo è il terzo post di Carlo Zanieri. 
+20 Novembre 2017', 'IL MUGELLO
+
+Il Mugello é un''ampia conca delimitata a nord dall''arco montuoso dei rilievi dell''Appennino, a sud dai contrafforti del Monte Giovi e del Monte Senario che dividono dalla vallata fiorentina, ad ovest dai monti di Vernio e della Calvana oltre i quali si estende la provincia di Prato, a est dall''Alpe di San Benedetto e del Falterona (dal quale nasce l''Arno).
+
+Qui troviamo i borghi di Vaglia, Barberino di Mugello, Scarperia, Borgo San Lorenzo, Vicchio, Dicomano e San Piero a Sieve.
+
+', '2017-11-20 11:57:27', '2021-05-10 17:31:28', 'prestige1.jpg', 'img/', 'Attraversato fin dall''antichità da due percorsi viari di grande rilevanza per la comunicazione tra i popoli dell''Italia centrale e quelli oltre-appenninici e padani - la Bolognese (tracciata dai romani) e la Faentina (antica strada etrusca) - il Mugello è stato crocevia di personaggi ed eserciti, trovandosi spesso coinvolto in episodi non sempre determinati dai suoi abitanti.
+
+La suggestione paesaggistica è arricchita dall''invaso di Bilancino, un grande lago artificiale che si colloca ad ovest di San Piero a Sieve, lungo la strada che conduce a Barberino.
+mugello-rotoballe', '', 'sea.jpg', 'sea.jpg', 'mugello');
+INSERT INTO beb_entries (id, author_id, title, markdown, html, published, updated, img, dir, html2, html3, img2, img3, slug) VALUES (3, 2, 'Chi Siamo', 'La Pro Loco di San Piero a Sieve è stata fondata per la prima volta nel 1969.  L’intento era quello di valorizzare il paese con le sue tradizioni, ma anche dare sfogo alle tante sensibilità artistiche, culturali e imprenditoriali che caratterizzavano quei tempi.
+Nel corso di un''assemblea presieduta dal Prof. Giuliano Rodolfi, fu eletto un consiglio con a capo il Dott. Prospero Papani.
+Molteplici furono le iniziative. La prima di quell’anno fu una mostra di caccia e pesca.', 'La Pro Loco di San Piero a Sieve è stata fondata per la prima volta nel 1969.  L’intento era quello di valorizzare il paese con le sue tradizioni, ma anche dare sfogo alle tante sensibilità artistiche, culturali e imprenditoriali che caratterizzavano quei tempi.
+Nel corso di un''assemblea presieduta dal Prof. Giuliano Rodolfi, fu eletto un consiglio con a capo il Dott. Prospero Papani.
+Molteplici furono le iniziative. La prima di quell’anno fu una mostra di caccia e pesca.', '2017-11-20 14:16:15', '2021-05-29 00:06:53', 'sapiero-storia-piazza.JPG', 'img/', 'In seguito furono organizzate le prime edizioni, e le più riuscite, della Mostra dell’Artigianato Mugellano. Gli splendidi locali adiacenti alla chiesa, con il salone mediceo, furono occupati dai prodotti della nostra area. Artigiani del mobile, arte del ricamo, modellistica furono al centro delle cose esposte. Numerose furono le edizioni. Il successo della Mostra dell’Artigianato fu sancito dall’Annullo Filatelico che le Poste Italiane fecero in occasione dell’VIII edizione svoltasi nel 1975.
+
+I primi anni della Pro Loco furono i più travagliati, soprattutto a causa dell''assenza di una sede stabile.
+
+Trovata in via Provinciale 30, ex negozio di ortofrutta della famiglia Cipollini, presero il via numerose iniziative:
+
+    La Festa di Primavera (dal 1974 al 1976) con la presenza di numerosi Florovivaisti della città di Firenze e l’allestimento di carri allegorici che percorsero le vie del paese;
+    Una raccolta di fondi effettuata con una grande Fiera di Beneficenza per finanziare l’asilo infantile “Antonio Frilli”;
+    Sagre della Polenta, con intervento della banda musicale e i “Frustatori” di Brisighella;
+    Fischi e Applausi, manifestazione svoltasi di prevalenza nel cortile della Chiesa;
+    Premio di pittura Mugello Arte.
+
+La sede era comunque crocevia di interesse, posta com’era al centro del paese. Nei locali della Pro Loco furono effettuate numerose mostre di pittura ed aste di quadri.
+Da ricordare inoltre fra le ultime iniziative, una raccolta di foto “storiche” fra le famiglie del paese, che portò alla realizzazione di una grande mostra fotografica dal titolo "San Piero com’era", ancora oggi fonte preziosa di documenti.
+
+Da ricordare i presidenti succedutisi in quegli anni: Prospero Papani, Aldo Garosi, Bruno Ducci.
+
+sapiero-storia-piazzaNel 1978 la Pro Loco cessava la sua attività, un po’ per caduta di interesse, senza più una sede, restituita ai proprietari. Si potrebbe sancire questo periodo con una frase che pronunciò uno dei presidenti, che suona pressappoco così: “Abbiamo avuto molte e belle idee, alcune le abbiamo realizzate, molte sono rimaste nel cassetto!”. Vanno ricordati inoltre i due volumi realizzati da Lanfranco Villani, consultabili nella Biblioteca Comunale.
+
+Dopo numerosi anni di oblio, la Pro Loco riprende vita nel 2002, per iniziativa del gruppo di ragazzi che l’anno prima avevano organizzato la manifestazione musicale Ingorgo Sonoro. Artefice di questa rinascita e trait d’union tra la vecchia e la nuova Pro Loco, Primo Lascialfari che diede un impulso determinante.
+
+Dobbiamo a lui l’idea dell''attuale logo, lo “stampiglio” con l’atleta etrusco, ritrovato durante gli scavi archeologici effettuati negli anni ’80, nei pressi della Fortezza di San Martino che sovrasta il paese.
+
+È quindi storia di oggi l’impegno con il quale in questi anni la Pro Loco si è profusa.
+
+Oltre ad organizzare Ingorgo Sonoro, che richiama migliaia di persone, dall’anno 2002 vengono organizzate numerose manifestazioni.
+In sintesi le seguenti:
+
+    Mercanzie di Natale, mercato artigianale lungo la via Provinciale;
+    Treno della Befana, con l’arrivo del treno storico a vapore nella stazione del paese;
+    Estemporanea di pittura;
+    Mugello Dance Experience, una due giorni di danza in piazza Colonna;
+    È Carnevale, con il corteo per le vie del paese dei bimbi in maschera;
+    La Festa del Marrone in Ottobre in collaborazione con le associazioni sanpierine.
+
+È storia di oggi anche l’impegno per gestire il nuovo spazio Auditorium in collaborazione con l’Associazione Camerata dé Bardi.
+Da ricordare Alessia Ballini, sindaco di San Piero a Sieve nel 2002, che tanto fece per agevolarne la rinascita.
+
+I presidenti succedutosi in questi anni, sono i seguenti: Emiliano Brunelli, Francesca Capecchi e Sauro Bani.
+SCOPI
+
+Gli scopi che la Pro Loco di San Piero a Sieve si prefigge sono quelli della valorizzazione del territorio, delle sue tradizioni, dei suoi monumenti.
+
+La Pro Loco fa parte del U.N.P.L.I - Unione Nazionale delle Pro Loco.
+Tutte le nostre iniziative sono tese all’unione dei cittadini, al rapporto intergenerazionale. La ricerca è quella dell’unione tra diverse sensibilità, di ri-socializzazione del paese. Individuazione di spazi idonei dove organizzare feste, mostre e quant’altro può interessare allo scopo.
+
+Siamo inoltre molto attenti nel dare una mano a chi ne ha bisogno. Promotori di campagne di solidarietà, vedi l’impegno per le popolazioni emiliane, sconvolte dal terremoto e a fianco di Telefono Azzurro, Emergency e Unicef.', '
+    Mercanzie di Natale, mercato artigianale lungo la via Provinciale;
+    Treno della Befana, con l’arrivo del treno storico a vapore nella stazione del paese;
+    Estemporanea di pittura;
+    Mugello Dance Experience, una due giorni di danza in piazza Colonna;
+    È Carnevale, con il corteo per le vie del paese dei bimbi in maschera;
+    La Festa del Marrone in Ottobre in collaborazione con le associazioni sanpierine.
+
+È storia di oggi anche l’impegno per gestire il nuovo spazio Auditorium in collaborazione con l’Associazione Camerata dé Bardi.
+Da ricordare Alessia Ballini, sindaco di San Piero a Sieve nel 2002, che tanto fece per agevolarne la rinascita.
+
+I presidenti succedutosi in questi anni, sono i seguenti: Emiliano Brunelli, Francesca Capecchi e Sauro Bani.
+SCOPI
+
+Gli scopi che la Pro Loco di San Piero a Sieve si prefigge sono quelli della valorizzazione del territorio, delle sue tradizioni, dei suoi monumenti.
+
+La Pro Loco fa parte del U.N.P.L.I - Unione Nazionale delle Pro Loco.
+Tutte le nostre iniziative sono tese all’unione dei cittadini, al rapporto intergenerazionale. La ricerca è quella dell’unione tra diverse sensibilità, di ri-socializzazione del paese. Individuazione di spazi idonei dove organizzare feste, mostre e quant’altro può interessare allo scopo.
+
+Siamo inoltre molto attenti nel dare una mano a chi ne ha bisogno. Promotori di campagne di solidarietà, vedi l’impegno per le popolazioni emiliane, sconvolte dal terremoto e a fianco di Telefono Azzurro, Emergency e Unicef.', 'sapiero-storia-piazza.JPG', 'sapiero-storia-piazza.JPG', 'index');
+INSERT INTO beb_entries (id, author_id, title, markdown, html, published, updated, img, dir, html2, html3, img2, img3, slug) VALUES (4, 1, 'Blog da App', 'questo blog è stato inserito dopo modifiche ad app.py', '<p>questo blog è stato inserito dopo modifiche ad app.py</p>', '2017-12-18 13:49:20', '2018-04-20 18:31:13', 'skyline.jpg', 'img/', '', '', '', '', 'blog-da-app');
+INSERT INTO beb_entries (id, author_id, title, markdown, html, published, updated, img, dir, html2, html3, img2, img3, slug) VALUES (5, 1, 'Post inserito il 19 Dicembre', 'Post inserito il 19 Dicembre alle ore 19:22', '<p>Post inserito il 19 Dicembre alle ore 19:22</p>', '2017-12-19 18:22:18', '2018-04-20 18:31:14', 'london-bridge.jpg', 'img/', '', '', '', '', 'post-inserito-il-19-dicembre');
+INSERT INTO beb_entries (id, author_id, title, markdown, html, published, updated, img, dir, html2, html3, img2, img3, slug) VALUES (6, 1, 'inserimento immagine', 'Prova inserimento immagine.', '<p>Prova inserimento immagine.</p>', '2018-04-20 10:47:33', '2018-04-20 18:31:14', 'logo-LM-2.png', 'img/', '', '', '', '', 'inserimento-immagine-2');
+
+-- Table: beb_entrieshome
+CREATE TABLE IF NOT EXISTS "beb_entrieshome" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "author_id" integer NOT NULL, "slug" varchar(100) NOT NULL, "title" varchar(512) NOT NULL, "markdown" varchar(255) NOT NULL, "html" varchar(512) NOT NULL, "published" datetime NOT NULL, "updated" datetime NOT NULL, "img" varchar(100) NOT NULL, "dir" varchar(100) NOT NULL);
+
+-- Table: beb_food
+CREATE TABLE IF NOT EXISTS "beb_food" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "codice" varchar(24) NOT NULL, "img" varchar(100) NOT NULL, "titolo" varchar(64) NOT NULL, "descrizione" varchar(512) NOT NULL, "link" varchar(512) NOT NULL, "attivo" integer NOT NULL, "width" varchar(6) NOT NULL, "height" varchar(6) NOT NULL, "indirizzo" varchar(64) NOT NULL, "telefono" varchar(64) NOT NULL, "apiedi" varchar(4) NOT NULL);
+INSERT INTO beb_food (id, codice, img, titolo, descrizione, link, attivo, width, height, indirizzo, telefono, apiedi) VALUES (1, 'osteinpiazza', 'osteinpiazza.jpg', 'L''Oste In Piazza', '', 'https://www.osteinpiazza.com/', 0, '5%', '5%', 'Piazza Cavour, 10', '+39 0558478027', '**');
+INSERT INTO beb_food (id, codice, img, titolo, descrizione, link, attivo, width, height, indirizzo, telefono, apiedi) VALUES (2, 'angolo27', 'angolo27.jpg', 'L’Angolo 27', 'L’Angolo 27 Ristorante e Pizzeria', 'https://www.facebook.com/angolo27/?locale=it_IT', 0, '5%', '5%', 'Piazza Cavour, 27', '+39 348 338 2678', '**');
+INSERT INTO beb_food (id, codice, img, titolo, descrizione, link, attivo, width, height, indirizzo, telefono, apiedi) VALUES (3, 'daipianca', 'daipianca.jpg', 'Da I'' Pianca', '', 'https://piatti.menu/restaurants/barberino-di-mugello/da-i-pianca', 0, '5%', '5%', 'Viale Della Repubblica, 34 ', '+39 349 261 6098', '**');
+INSERT INTO beb_food (id, codice, img, titolo, descrizione, link, attivo, width, height, indirizzo, telefono, apiedi) VALUES (4, 'kebab', 'kebab.jpg', 'City Istanbul Kebab Pizza', 'City Istanbul Kebab Pizza', 'https://piatti.menu/restaurants/barberino-di-mugello/city-istanbul-pizza-kebab-di-pire-mehmet-ali', 0, '5%', '5%', 'Corso B. Corsini, 122', '+39 329 324 5771', '**');
+INSERT INTO beb_food (id, codice, img, titolo, descrizione, link, attivo, width, height, indirizzo, telefono, apiedi) VALUES (5, 'girodibacco', 'girodibacco.avif', 'Giro di Bacco', 'Giro di Bacco - Ristorante', 'https://www.girodibacco.it/', 0, '5%', '5%', 'Viale della Repubblica, 7', '+39 05584 181 73', '**');
+INSERT INTO beb_food (id, codice, img, titolo, descrizione, link, attivo, width, height, indirizzo, telefono, apiedi) VALUES (6, 'Elementi', 'elementi.webp', 'Elementi - Cocktail & Pizza', 'Elementi - Cocktail & Pizza', 'https://elementirestaurant.it/it', 0, '5%', '5%', 'Via del Pozzo, 13', '+393516858588', '**');
+
+-- Table: beb_links
+CREATE TABLE IF NOT EXISTS "beb_links" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "codice" varchar(24) NOT NULL, "img" varchar(100) NOT NULL, "titolo" varchar(64) NOT NULL, "descrizione" varchar(512) NOT NULL, "link" varchar(512) NOT NULL, "attivo" integer NOT NULL, "height" varchar(6) NOT NULL, "width" varchar(6) NOT NULL);
+INSERT INTO beb_links (id, codice, img, titolo, descrizione, link, attivo, height, width) VALUES (0, 'mugelloturismo', 'logo-uc-mugello.gif', 'Turismo Mugello', 'Mugello Turismo', 'https://www.mugellotoscana.it/it/
+https://www.mugellotoscana.it/it/', 0, '6%', '6%');
+INSERT INTO beb_links (id, codice, img, titolo, descrizione, link, attivo, height, width) VALUES (1, 'comunebarberino', 'logo_barberino_testata_3.png', 'Comune Barberino', 'Sito ufficiale del Comune di Barberino di Mugello', 'https://www.comunebarberino.it/', 0, '6%', '6%');
+INSERT INTO beb_links (id, codice, img, titolo, descrizione, link, attivo, height, width) VALUES (2, 'autolinee', 'logo-at-bus.png', 'Orari Autobus (Autolinee Toscane)', '', 'https://www.at-bus.it/it/linee-e-orari/firenze-extraurbano-301', 0, '15%', '8%');
+INSERT INTO beb_links (id, codice, img, titolo, descrizione, link, attivo, height, width) VALUES (3, 'visittuscany', 'logo-rt.jpg', 'visittuscany', 'Sito ufficiale della destinazione Toscana ©2025', 'https://www.visittuscany.com/it/index.html', 0, '6%', '6%');
+INSERT INTO beb_links (id, codice, img, titolo, descrizione, link, attivo, height, width) VALUES (4, 'vetrinatoscana', 'Vetrina_Toscana-logo.png', 'Vetrina Toscana', 'Il valore dell’identità enogastronomica toscana', 'https://www.vetrina.toscana.it/cose-vetrina-toscana/', 0, '6%', '6%');
+INSERT INTO beb_links (id, codice, img, titolo, descrizione, link, attivo, height, width) VALUES (5, 'Storiamugello', 'CiperssiMugello.png', 'Il Mugello', 'Tutto sul Mugello', 'https://it.wikipedia.org/wiki/Mugello', 0, '8%', '8%');
+INSERT INTO beb_links (id, codice, img, titolo, descrizione, link, attivo, height, width) VALUES (6, 'barberino', 'PiazzaCavourBarberino.jpg', 'Tutto su Barberino', 'Barberino su wikipedia', 'https://it.wikipedia.org/wiki/Barberino_di_Mugello', 0, '6%', '6%');
+INSERT INTO beb_links (id, codice, img, titolo, descrizione, link, attivo, height, width) VALUES (7, 'guidemugello', 'logo-uc-mugello.gif', 'Le guide del Mugello', 'Le guide del Mugello OnLine', 'https://www.mugellotoscana.it/it/guide.html', 0, '6%', '6%');
+
+-- Table: django_admin_log
+CREATE TABLE IF NOT EXISTS "django_admin_log" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "object_id" text NULL, "object_repr" varchar(200) NOT NULL, "action_flag" smallint unsigned NOT NULL CHECK ("action_flag" >= 0), "change_message" text NOT NULL, "content_type_id" integer NULL REFERENCES "django_content_type" ("id") DEFERRABLE INITIALLY DEFERRED, "user_id" integer NOT NULL REFERENCES "auth_user" ("id") DEFERRABLE INITIALLY DEFERRED, "action_time" datetime NOT NULL);
+
+-- Table: django_content_type
+CREATE TABLE IF NOT EXISTS "django_content_type" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "app_label" varchar(100) NOT NULL, "model" varchar(100) NOT NULL);
+INSERT INTO django_content_type (id, app_label, model) VALUES (1, 'beb', 'menuweb');
+INSERT INTO django_content_type (id, app_label, model) VALUES (2, 'beb', 'blog');
+INSERT INTO django_content_type (id, app_label, model) VALUES (3, 'beb', 'entries');
+INSERT INTO django_content_type (id, app_label, model) VALUES (4, 'beb', 'entrieshome');
+INSERT INTO django_content_type (id, app_label, model) VALUES (5, 'beb', 'slider');
+INSERT INTO django_content_type (id, app_label, model) VALUES (6, 'beb', 'links');
+INSERT INTO django_content_type (id, app_label, model) VALUES (7, 'admin', 'logentry');
+INSERT INTO django_content_type (id, app_label, model) VALUES (8, 'auth', 'permission');
+INSERT INTO django_content_type (id, app_label, model) VALUES (9, 'auth', 'group');
+INSERT INTO django_content_type (id, app_label, model) VALUES (10, 'auth', 'user');
+INSERT INTO django_content_type (id, app_label, model) VALUES (11, 'contenttypes', 'contenttype');
+INSERT INTO django_content_type (id, app_label, model) VALUES (12, 'sessions', 'session');
+INSERT INTO django_content_type (id, app_label, model) VALUES (13, 'beb', 'food');
+
+-- Table: django_migrations
+CREATE TABLE IF NOT EXISTS "django_migrations" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "app" varchar(255) NOT NULL, "name" varchar(255) NOT NULL, "applied" datetime NOT NULL);
+INSERT INTO django_migrations (id, app, name, applied) VALUES (1, 'contenttypes', '0001_initial', '2025-01-23 22:31:53.027201');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (2, 'auth', '0001_initial', '2025-01-23 22:31:53.070108');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (3, 'admin', '0001_initial', '2025-01-23 22:31:53.102683');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (4, 'admin', '0002_logentry_remove_auto_add', '2025-01-23 22:31:53.124358');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (5, 'admin', '0003_logentry_add_action_flag_choices', '2025-01-23 22:31:53.146053');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (6, 'contenttypes', '0002_remove_content_type_name', '2025-01-23 22:31:53.173481');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (7, 'auth', '0002_alter_permission_name_max_length', '2025-01-23 22:31:53.193026');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (8, 'auth', '0003_alter_user_email_max_length', '2025-01-23 22:31:53.211725');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (9, 'auth', '0004_alter_user_username_opts', '2025-01-23 22:31:53.230829');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (10, 'auth', '0005_alter_user_last_login_null', '2025-01-23 22:31:53.251843');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (11, 'auth', '0006_require_contenttypes_0002', '2025-01-23 22:31:53.264506');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (12, 'auth', '0007_alter_validators_add_error_messages', '2025-01-23 22:31:53.283113');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (13, 'auth', '0008_alter_user_username_max_length', '2025-01-23 22:31:53.306181');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (14, 'auth', '0009_alter_user_last_name_max_length', '2025-01-23 22:31:53.325174');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (15, 'auth', '0010_alter_group_name_max_length', '2025-01-23 22:31:53.347337');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (16, 'auth', '0011_update_proxy_permissions', '2025-01-23 22:31:53.363498');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (17, 'auth', '0012_alter_user_first_name_max_length', '2025-01-23 22:31:53.381301');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (27, 'sessions', '0001_initial', '2025-01-23 22:31:53.668109');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (45, 'beb', '0001_initial', '2025-02-03 23:37:22.802368');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (46, 'beb', '0002_alter_links_height_alter_links_width', '2025-02-04 17:40:20.478436');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (47, 'beb', '0003_alter_links_height_alter_links_width', '2025-02-04 18:07:29.038370');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (48, 'beb', '0004_slider_testo', '2025-02-14 21:26:25.099694');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (49, 'beb', '0002_blog', '2025-05-11 17:42:11.825501');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (50, 'beb', '0003_entries', '2025-05-11 17:42:11.830336');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (51, 'beb', '0004_entries_slug', '2025-05-11 17:42:11.834656');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (52, 'beb', '0005_entrieshome', '2025-05-11 17:42:11.838705');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (53, 'beb', '0006_remove_entrieshome_html2_remove_entrieshome_html3_and_more', '2025-05-11 17:42:11.841956');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (54, 'beb', '0007_slider', '2025-05-11 17:42:11.845010');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (55, 'beb', '0008_remove_slider_id_slider_id', '2025-05-11 17:42:11.848358');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (56, 'beb', '0009_links_remove_slider_id_slider_id', '2025-05-11 17:42:11.852142');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (57, 'beb', '0010_rename_descrisione_links_descrizione', '2025-05-11 17:42:11.855899');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (58, 'beb', '0011_links_descrisione', '2025-05-11 17:42:11.859669');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (59, 'beb', '0012_merge_0004_slider_testo_0011_links_descrisione', '2025-05-11 17:42:11.863086');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (60, 'beb', '0013_remove_links_descrisione_alter_links_descrizione', '2025-05-11 17:42:11.866338');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (61, 'beb', '0014_delete_blog', '2025-05-11 17:42:11.869610');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (62, 'beb', '0015_food', '2025-06-10 22:32:32.788411');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (63, 'beb', '0016_food_indirizzo_food_telefono', '2025-06-11 21:06:28.461255');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (64, 'beb', '0017_food_apiedi', '2025-06-13 21:56:06.944645');
+INSERT INTO django_migrations (id, app, name, applied) VALUES (65, 'beb', '0018_slider_codice2', '2025-10-22 22:40:50.666609');
+
+-- Table: django_session
+CREATE TABLE IF NOT EXISTS "django_session" ("session_key" varchar(40) NOT NULL PRIMARY KEY, "session_data" text NOT NULL, "expire_date" datetime NOT NULL);
+INSERT INTO django_session (session_key, session_data, expire_date) VALUES ('cbvtgekfazfr0ka066l2mc2iybo3xqqk', '.eJxVjMsOwiAQRf-FtSG8Cy7d-w2EYQapGkhKuzL-uzbpQrf3nHNfLKZtrXEbtMQZ2ZlJdvrdIOUHtR3gPbVb57m3dZmB7wo_6ODXjvS8HO7fQU2jfutCQgCAnSxZNEEXsjIQoXcJvFbaI2VRyMnisgrgyaig0oRWGFGABHt_AAWSOJg:1tf66G:rdcMHFNZjNBYkXAb9lg8ewFHYYJH_TSpfBuaRMMTJbc', '2025-02-17 23:43:32.375662');
+
+-- Table: menu
+CREATE TABLE IF NOT EXISTS menu (id integer NOT NULL PRIMARY KEY AUTOINCREMENT, codice varchar (20) NOT NULL, radice varchar (20) NOT NULL, livello integer NOT NULL, titolo varchar (64) NOT NULL, descrizione varchar (256) NOT NULL, link varchar (512) NOT NULL, attivo integer NOT NULL, icon varchar (255) NOT NULL, workplace integer NOT NULL, param1 varchar (255) NOT NULL, ordine integer NOT NULL);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (34, 'archiviopost', 'archivio', 3, 'Archivio Post', 'archivio post', '/archive', 0, 'ui-icon-document', 402220600, 'pub', 1);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (35, 'generale', 'generale', 1, 'MENU Generale', 'Menu Generale', '', 0, '/icone/home', 0, 'pub', 4);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (36, 'turismo', 'turismo', 2, 'Turismo', 'Percorsi', '', 1, 'ui-icon-document', 402218601, 'pub', 9);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (37, 'manifesta', 'generale', 2, 'manifestazioni', 'manifestazioni', '/manifestazioni', 0, 'ui-icon-document', 402220600, 'pub', 9);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (38, 'lacasa', 'lacasa', 2, 'Il Paese e La nostra Casa', 'La Nostra Casa', '', 1, 'ui-icon-document', 402221400, 'pub', 2);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (39, 'home', 'home', 2, 'Home', 'home', '/home', 1, 'ui-icon-document', 402221400, 'pub', 1);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (40, 'lasala', 'lacasa', 3, 'La Sala Comune', 'La Sala Comune', '/lasala?luogo=lasala', 1, 'ui-icon-document', 402220600, 'pub', 5);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (41, 'conferenza', '', 3, 'conferenza', 'Multi Conferenza', '/conferenza/', 1, 'ui-icon-document', 402220600, 'priv', 6);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (42, 'percorsi', 'turismo', 3, 'Percorsi Trekking ', 'Percorsi', 'https://discovermugello.it/service/itinerari-trekking-mugello/', 1, 'ui-icon-document', 402218601, 'priv', 2);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (43, 'camere', 'lacasa', 3, 'Le Camere', 'Le Nostre Camere', '/camere?luogo=camere', 1, 'ui-icon-document', 402220600, 'pub', 3);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (44, 'contatti', 'contatti', 2, 'Contatti e Prenotazioni', 'Contatti e Prenotazioni', '', 1, 'ui-icon-document', 402220600, 'pub', 8);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (45, 'linkutili', 'contatti', 0, 'Contatti e Link Utili', 'Link Utili', '/linkutili', 0, 'ui-icon-document', 402220600, 'pub', 9);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (46, 'prenotazioni', 'contatti', 3, 'Prenotazioni', 'Come prenotare', '/prenotazioni', 1, 'ui-icon-document', 402220600, 'pub', 10);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (48, 'contatti', 'contatti', 3, 'Contatti', 'Contatti', '/contatti', 1, 'ui-icon-document', 402220600, 'pub', 12);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (49, 'ilmugello', 'turismo', 3, 'Il Mugello', 'Il Mugello', 'https://www.mugellotoscana.it/it/', 1, 'ui-icon-document', 402221400, 'pub', 13);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (50, 'monumenti', 'turismo', 3, 'Beni Culturali', 'Beni Culturali', '/monumenti', 1, 'ui-icon-document', 402221400, 'pub', 14);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (51, 'gastronomia', 'turismo', 3, 'Gastronomia', 'Gastronomia', '/gastronomia', 0, 'ui-icon-document', 402220600, 'pub', 15);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (52, 'home', 'home', 3, 'Home', 'HOME', '/', 1, 'ui-icon-document', 402221400, 'pub', 1);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (53, 'linkutili', 'contatti', 3, 'Link Utili', 'Link Utili', '/modal', 1, 'ui-icon-document', 402220400, 'pub', 2);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (54, 'chisiamo', 'chisiamo', 3, 'Chi Siamo', 'Chi Siamo', '/chisiamo', 1, 'ui-icon-document', 402220400, 'pub', 18);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (56, 'serverstream', '', 3, 'ServerStreaming', 'Server streaming', '/selectstreaming/', 1, 'ui-icon-document', 402220600, 'priv', 20);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (57, 'mangiare', 'turismo', 3, 'Dove Mangiare', 'Dove Mangiare', '/dovemangiare', 1, 'ui-icon-document', 402221400, 'pub', 3);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (58, 'dormire', 'turismo', 3, 'Dove Dormire', 'Dove Dormire', '/dormire', 0, 'ui-icon-document', 402221400, 'pub', 3);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (59, 'login', '', 3, 'Login', 'Login', '/login', 1, 'ui-icon-document', 402221400, 'pub', 23);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (60, 'logout', '', 3, 'logout', 'logout', 'logout', 1, 'ui-icon-document', 402221400, 'pub', 24);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (61, 'admin', 'admin', 2, 'Amministrazione', 'Amministrazione', 'admin', 0, 'ui-icon-document', 402221400, 'priv', 25);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (62, 'insmanif', 'admin', 3, 'Inserisce Manifestazione', 'Inserisce Manifestazione', '/ins_manifestazioni', 1, 'ui-icon-document', 402221400, 'priv', 26);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (64, 'homeh', '', 3, 'HomE', 'home', '', 1, 'ui-icon-document', 402221400, 'pub', 28);
+INSERT INTO menu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (66, 'Il Paese', 'lacasa', 3, 'Barberino di Mugello', 'Il Paese di Barberino', '/ilpaese?luogo=ilpaese', 1, 'ui-icon-document', 402220600, 'pub', 5);
+
+-- Table: sliders
+CREATE TABLE IF NOT EXISTS "sliders" (id integer NOT NULL PRIMARY KEY AUTOINCREMENT, codice varchar (24) NOT NULL, codice2 varchar (24) NOT NULL, img varchar (100) NOT NULL, titolo varchar (64) NOT NULL, caption varchar (512) NOT NULL, link varchar (512) NOT NULL, testo varchar (2048) NOT NULL);
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (1, 'index', 'ilpaese', 'IMG_20130223_142608.jpg', 'Neve a Barberino', 'La terrazza innevata lato torrente Stura ', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'La nevicata del 2012 sulla terrazza con vista sul torrente Stura.');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (2, 'index', 'ilpaese', 'sea.jpg', 'Il lago di Bilancino', 'Il lago di Bilancino è l''invaso artificiale più esteso d''Europa.', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'La diga è costituita da un imponente bastione che adattandosi parzialmente all''orografia del sito definisce il margine sud-orientale del lago; tale bastione presenta sul versante orientale una scarpata terrazzata rivestita di manto erboso e scandita da camminamenti d''ispezione sia in verticale che in orizzontale; sul versante verso il lago, un''interrotta pendenza in massi calcarei e ciottoli di ghiaia. Sul culmine di tale sezione triangolare è posizionata la viabilità di servizio che, partendo dalla variante della statale della Futa in coincidenza con l''abitato di Bilancino, conduce ai due corpi della casa di guardia e della torre di presa, collegate da un''aerea passerella metallica. La viabilità di collegamento, dall''andamento sinuoso e dal carattere panoramico, è scandita regolarmente da speroni triangolari (alternativamente a monte e a valle) aventi funzione di sosta e di controllo. ');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (14, 'index', 'ilpaese', 'sala1_2.jpg', 'La Sala comune', 'Il Paese', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Il Paese');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (15, 'index', 'ilpaese', 'lapiazza_1.jpg', 'La Camera sulla Piazza', 'Camera Matrimoniale con affaccio sulla piazza', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Il Paese');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (16, 'index', 'ilpaese', 'lago.jpg', 'Il Paese', 'Il Paese', 'https://it.wikipedia.org/wiki/Santuario_di_Montesenario', 'Il Paese');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (19, 'camere', 'camere', 'anni60_3.jpg', 'Anni 60', 'Camera da letto con letto matrimoniale', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Camera con letto matrimoniale');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (22, 'ilpaese', 'ilpaese', 'cafaggiolo_2.jpg', 'Il Castello di Cafaggiolo', 'Il Castello di Cafaggiolo', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Il Paese');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (23, 'ilpaese', 'ilpaese', 'cafaggiolo.jpg', 'Il Castello di Cafaggiolo', 'Il Castello Mediceo di Cafaggiolo', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Il Paese');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (24, 'ilpaese', 'ilpaese', 'loggemedicee.jpg', 'Logge Medicee', 'Le Logge Medicee del Michelozzo', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Il Paese');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (25, 'ilpaese', 'ilpaese', 'piazzacavour.jpg', 'Piazza Cavour', 'La Piazza principale del Paese', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Il Paese');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (26, 'ilpaese', 'ilpaese', 'palazzopretorio.jpg', 'Palazzo Pretorio', 'Il Palazzo Pretorio - Oggi sede della Biblioteca Comunale', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Il Paese');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (27, 'ilpaese', 'ilpaese', 'lagobilancino.jpg', 'Il Lago di Bilancino', 'Il Lago di Bilancino', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Il Paese');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (28, 'ilpaese', 'ilpaese', 'lagobilancino_2.jpg', 'Il Lago di Bilancino', 'Il Lago di Bilancino', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Il Paese');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (29, 'ilpaese', 'ilpaese', 'triathlon.jpg', 'Gara di Triathlon', 'Gara Nazionale di Triathlon', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Il Paese');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (30, 'ilpaese', 'ilpaese', 'lagobilancinovela.jpg', 'Vela sul Lago', 'Vela sul Lago di Bilancino', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Il Paese');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (31, 'ilpaese', 'ilpaese', 'designeroutlet.jpg', 'Outlet della moda', 'Designer Outlet di Barberino di Mugello', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Il Paese');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (32, 'index', 'camere', 'anni60_1.jpg', 'Anni 60', 'Camera con letto matrimoniale', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Camera con letto matrimoniale');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (33, 'index', 'camere', 'anni70_2.jpg', 'Anni 70', 'Camera con letto matrimoniale', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Camera con 2 letti singoli');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (34, 'index', 'camere', 'anni70_3.jpg', 'Anni 70', 'Camera con letto 1 piazza e e mezzo + letto singolo', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Camera con 2 letti singoli');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (35, 'index', 'camere', 'anni60_2.jpg', 'Anni 60', 'Camera con letto matrimoniale', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Camera con letto matrimoniale');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (36, 'index', 'camere', 'anni70_3.jpg', 'Anni 70', 'Camera con letto 1 piazza e e mezzo + letto singolo', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Camera con 2 letti singoli');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (37, 'index', 'camere', 'anni70_4.jpg', 'Anni 70', 'Camera con 2 letti singoli', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Camera con 2 letti singoli');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (38, 'index', 'camere', 'lapiazza_1.jpg', 'La Piazza', 'Camera con letto 1 piazza e mezzo', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Camera con letto 1 piazza e mezzo');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (39, 'index', 'camere', 'anni70_5.jpg', 'Anni 70', 'Camera con 2 letti singoli', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Camera con 2 letti singoli');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (40, 'index', 'camere', 'lapiazza_1.jpg', 'La Piazza', 'Camera con letto 1 piazza e mezzo', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Camera con letto 1 piazza e mezzo');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (41, 'index', 'lasala', 'sala1.jpg', 'Sala Comune', 'Sala Colazione e relax', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', '');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (42, 'index', 'lasala', 'sala2.jpg', 'Sala Comune', 'Sala Colazione e relax', 'https://it.wikipedia.org/wiki/Monte_Giovi', '');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (43, 'index', 'lasala', 'sala3.jpg', 'Sala comune', 'Sala colazione e relax', 'https://it.wikipedia.org/wiki/Santuario_di_Montesenario', '');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (44, 'index', 'ilpaese', 'cafaggiolo_2.jpg', 'Il Castello di Cafaggiolo', 'Il Castello di Cafaggiolo', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', '');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (45, 'index', 'ilpaese', 'cafaggiolo.jpg', 'Il Castello di Cafaggiolo', 'Il Castello Mediceo di Cafaggiolo', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Il Castello Mediceo di Cafaggiolo - inserito,nel 2013, nella lista UNESCO come patrimonio dell''umanità');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (46, 'index', 'ilpaese ', 'loggemedicee.jpg', 'Logge Medicee', 'Le Logge Medicee del Michelozzo', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Le Logge medicee di Barberino progettate da Michelozzo.');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (47, 'index', 'ilpaese', 'piazzacavour.jpg', 'Piazza Cavour', 'La Piazza principale del Paese', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', '');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (48, 'index', 'ilpaese ', 'palazzopretorio.jpg', 'Palazzo Pretorio', 'Il Palazzo Pretorio - Oggi sede della Biblioteca Comunale', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', 'Oggi sede della Biblioteca Comunala.');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (49, 'index', 'ilpaese ', 'triathlon.jpg', 'Gara di Triathlon', 'Gara Nazionale di Triathlon', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', '');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (50, 'index', 'ilpaese', 'lagobilancino.jpg', 'Il Lago di Bilancino', 'Il Lago di Bilancino', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', '');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (51, 'index', 'ilpaese', 'lagobilancino_2.jpg', 'Il Lago di Bilancino', 'Il Lagodi Bilancino', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', '');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (52, 'index', 'ilpaese', 'lagobilancinovela.jpg', 'Vela sul Lago', 'Vela sul Lago di Bilancino', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', '');
+INSERT INTO sliders (id, codice, codice2, img, titolo, caption, link, testo) VALUES (53, 'index', 'ilpaese', 'designeroutlet.jpg', 'Outlet della moda', 'Il Designer Outlet di Barberino di Mugello', 'https://it.wikipedia.org/wiki/Lago_di_Bilancino', '');
+
+-- Table: sliders_2
+CREATE TABLE IF NOT EXISTS "sliders_2" (img TEXT, titolo TEXT, caption TEXT, testo TEXT);
+INSERT INTO sliders_2 (img, titolo, caption, testo) VALUES ('1.jpg', 'Casa Baldini', 'Un soggiorno indimenticabile', 'Descrizione dettagliata qui');
+
+-- Table: submenu
+CREATE TABLE IF NOT EXISTS submenu(
+  id INT,
+  codice TEXT,
+  radice TEXT,
+  livello INT,
+  titolo TEXT,
+  descrizione TEXT,
+  link TEXT,
+  attivo INT,
+  icon TEXT,
+  workplace INT,
+  param1 TEXT,
+  ordine INT
+);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (34, 'archiviopost', 'archivio', 3, 'Archivio Post', 'archivio post', '/archive', 0, 'ui-icon-document', 402220600, 'pub', 1);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (40, 'lasala', 'lacasa', 3, 'La Sala Comune', 'La Sala Comune', '/lacasailpaese', 1, 'ui-icon-document', 402220600, 'pub', 5);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (41, 'conferenza', '', 3, 'conferenza', 'Multi Conferenza', '/conferenza/', 1, 'ui-icon-document', 402220600, 'priv', 6);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (42, 'percorsi', 'turismo', 3, 'Percorsi Trekking ', 'Percorsi', 'https://discovermugello.it/service/itinerari-trekking-mugello/', 1, 'ui-icon-document', 402218601, 'priv', 2);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (43, 'camere', 'lacasa', 3, 'Le Camere', 'Le Nostre Camere', 'lacasailpaese', 1, 'ui-icon-document', 402220600, 'pub', 3);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (46, 'prenotazioni', 'contatti', 3, 'Prenotazioni', 'Come prenotare', '/prenotazioni', 1, 'ui-icon-document', 402220600, 'pub', 10);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (48, 'contatti', 'contatti', 3, 'Contatti', 'Contatti', '/contatti', 1, 'ui-icon-document', 402220600, 'pub', 12);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (49, 'ilmugello', 'turismo', 3, 'Il Mugello', 'Il Mugello', 'https://www.mugellotoscana.it/it/', 1, 'ui-icon-document', 402221400, 'pub', 13);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (50, 'monumenti', 'turismo', 3, 'Beni Culturali', 'Beni Culturali', '/monumenti', 1, 'ui-icon-document', 402221400, 'pub', 14);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (51, 'gastronomia', 'turismo', 3, 'Gastronomia', 'Gastronomia', '/gastronomia', 0, 'ui-icon-document', 402220600, 'pub', 15);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (52, 'home', 'home', 3, 'Home', 'HOME', '/', 1, 'ui-icon-document', 402221400, 'pub', 1);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (53, 'linkutili', 'contatti', 3, 'Link Utili', 'Link Utili', '/modal', 1, 'ui-icon-document', 402220400, 'pub', 2);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (54, 'chisiamo', 'home', 3, 'Chi Siamo', 'Chi Siamo', '/about', 1, 'ui-icon-document', 402220400, 'pub', 18);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (56, 'serverstream', '', 3, 'ServerStreaming', 'Server streaming', '/selectstreaming/', 1, 'ui-icon-document', 402220600, 'priv', 20);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (57, 'mangiare', 'turismo', 3, 'Dove Mangiare', 'Dove Mangiare', '/dovemangiare', 1, 'ui-icon-document', 402221400, 'pub', 3);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (58, 'dormire', 'turismo', 3, 'Dove Dormire', 'Dove Dormire', '/dormire', 0, 'ui-icon-document', 402221400, 'pub', 3);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (59, 'login', '', 3, 'Login', 'Login', '/login', 1, 'ui-icon-document', 402221400, 'pub', 23);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (60, 'logout', '', 3, 'logout', 'logout', 'logout', 1, 'ui-icon-document', 402221400, 'pub', 24);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (62, 'insmanif', 'admin', 3, 'Inserisce Manifestazione', 'Inserisce Manifestazione', '/ins_manifestazioni', 1, 'ui-icon-document', 402221400, 'priv', 26);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (64, 'homeh', '', 3, 'HomE', 'home', '', 1, 'ui-icon-document', 402221400, 'pub', 28);
+INSERT INTO submenu (id, codice, radice, livello, titolo, descrizione, link, attivo, icon, workplace, param1, ordine) VALUES (66, 'Il Paese', 'lacasa', 3, 'Barberino di Mugello', 'Il Paese di Barberino', '/ilpaese', 1, 'ui-icon-document', 402220600, 'pub', 5);
+
+-- Index: auth_group_permissions_group_id_b120cbf9
+CREATE INDEX IF NOT EXISTS "auth_group_permissions_group_id_b120cbf9" ON "auth_group_permissions" ("group_id");
+
+-- Index: auth_group_permissions_group_id_permission_id_0cd325b0_uniq
+CREATE UNIQUE INDEX IF NOT EXISTS "auth_group_permissions_group_id_permission_id_0cd325b0_uniq" ON "auth_group_permissions" ("group_id", "permission_id");
+
+-- Index: auth_group_permissions_permission_id_84c5c92e
+CREATE INDEX IF NOT EXISTS "auth_group_permissions_permission_id_84c5c92e" ON "auth_group_permissions" ("permission_id");
+
+-- Index: auth_permission_content_type_id_2f476e4b
+CREATE INDEX IF NOT EXISTS "auth_permission_content_type_id_2f476e4b" ON "auth_permission" ("content_type_id");
+
+-- Index: auth_permission_content_type_id_codename_01ab375a_uniq
+CREATE UNIQUE INDEX IF NOT EXISTS "auth_permission_content_type_id_codename_01ab375a_uniq" ON "auth_permission" ("content_type_id", "codename");
+
+-- Index: auth_user_groups_group_id_97559544
+CREATE INDEX IF NOT EXISTS "auth_user_groups_group_id_97559544" ON "auth_user_groups" ("group_id");
+
+-- Index: auth_user_groups_user_id_6a12ed8b
+CREATE INDEX IF NOT EXISTS "auth_user_groups_user_id_6a12ed8b" ON "auth_user_groups" ("user_id");
+
+-- Index: auth_user_groups_user_id_group_id_94350c0c_uniq
+CREATE UNIQUE INDEX IF NOT EXISTS "auth_user_groups_user_id_group_id_94350c0c_uniq" ON "auth_user_groups" ("user_id", "group_id");
+
+-- Index: auth_user_user_permissions_permission_id_1fbb5f2c
+CREATE INDEX IF NOT EXISTS "auth_user_user_permissions_permission_id_1fbb5f2c" ON "auth_user_user_permissions" ("permission_id");
+
+-- Index: auth_user_user_permissions_user_id_a95ead1b
+CREATE INDEX IF NOT EXISTS "auth_user_user_permissions_user_id_a95ead1b" ON "auth_user_user_permissions" ("user_id");
+
+-- Index: auth_user_user_permissions_user_id_permission_id_14a6b632_uniq
+CREATE UNIQUE INDEX IF NOT EXISTS "auth_user_user_permissions_user_id_permission_id_14a6b632_uniq" ON "auth_user_user_permissions" ("user_id", "permission_id");
+
+-- Index: django_admin_log_content_type_id_c4bce8eb
+CREATE INDEX IF NOT EXISTS "django_admin_log_content_type_id_c4bce8eb" ON "django_admin_log" ("content_type_id");
+
+-- Index: django_admin_log_user_id_c564eba6
+CREATE INDEX IF NOT EXISTS "django_admin_log_user_id_c564eba6" ON "django_admin_log" ("user_id");
+
+-- Index: django_content_type_app_label_model_76bd3d3b_uniq
+CREATE UNIQUE INDEX IF NOT EXISTS "django_content_type_app_label_model_76bd3d3b_uniq" ON "django_content_type" ("app_label", "model");
+
+-- Index: django_session_expire_date_a5c62663
+CREATE INDEX IF NOT EXISTS "django_session_expire_date_a5c62663" ON "django_session" ("expire_date");
+
+COMMIT TRANSACTION;
+PRAGMA foreign_keys = on;

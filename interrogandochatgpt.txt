@@ -1,0 +1,73 @@
+nel main.rs di rust ho questa funzione:
+
+pub async fn get_sliders() -> Result<Vec<Slider>, ServerFnError> {
+    use sqlx::SqlitePool;
+
+    let pool = SqlitePool::connect("sqlite:casabaldini.sqlite").await
+        .map_err(|e| ServerFnError::new(&format!("DB Connection Error: {}", e)))?;
+
+    // Rimuoviamo il "!" da query_as per evitare il controllo a tempo di compilazione
+    let res = sqlx::query_as::<_, Slider>("SELECT id, img, titolo, caption, testo FROM sliders")
+        .fetch_all(&pool)
+        .await
+        .map_err(|e| ServerFnError::new(&format!("Query Error: {}", e)))?;
+
+    Ok(res)
+}
+
+se, in res, voglio aggiungere unvalore che deriva di una costante : const SLIDER_SVG: Asset = asset!("/assets/img/index/cafaggiolo.jpg");  dove, al posto di cafaggiolo.jpg voglio inserire il contenuto delcampo img del database, come devo implementarlo?
+
+
+pub struct SliderOut {
+    pub id: i64,
+    pub img: String,
+    pub titolo: String,
+    pub caption: String,
+    pub testo: String,
+    pub img_path: String,
+}
+
+let res = sqlx::query_as::<_, Slider>("SELECT id, img, titolo, caption, testo FROM sliders")
+    .fetch_all(&pool)
+    .await
+    .map_err(|e| ServerFnError::new(&format!("Query Error: {}", e)))?;
+
+let res = res
+    .into_iter()
+    .map(|s| SliderOut {
+        img_path: format!("/assets/img/index/{}", s.img),
+        id: s.id,
+        img: s.img,
+        titolo: s.titolo,
+        caption: s.caption,
+        testo: s.testo,
+    })
+    .collect();
+
+Ok(res)
+
+
+
+
+Allora: quello che hai proposto funziona parzialmente(compilazione ok, ma in esecuzione da errori), ma, visto che questo era un tentativo per aggirare un problema e non sono neanche certo che avrebbe funzionato, anzi credo proprio che non avrebbe funzionato, provo ad esporti nel dettaglio il problema:
+sto sviluppando un progetto web con rust + dioxus + axum + sqlx, mella home del progetto deve apparire uno slider di testo ed immagini il tutto è originato da un database sqlite. Nessun problema per il testo, funziona perfettamente) il problema nasce con le immagini, se io faccio questo:
+
+const SLIDER_SVG: Asset = asset!("/assets/img/index/cafaggiolo.jpg");
+
+e poi nel blocco rsx!
+
+img { src: SLIDER_SVG, id: "header" }
+
+se invece faccio questo:
+
+img { src: "/assets/img/index/cafaggiolo.jpg" , id: "header" }
+
+oppure:
+
+img { src: "/assets/img/index/s.img" , id: "header" }
+
+l'immagine non viene trovata e la pagina web mostra l'icona dell'immagine rotta
+
+considerazione finale:
+
+possibile che, in una realtà del web nel quale non esistono più pagine statiche, una piattaforma di sviluppo tra le più avanzate, non permetta di pibblicare immagini in modo dinamico?

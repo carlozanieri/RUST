@@ -1,0 +1,42 @@
+[application]
+name = "casabaldini"
+asset_dir = "assets" # Assicurati che non ci siano slash prima o dopo
+#[web.asset] 
+#dir = "assets"
+processed = false
+##[web.assets]
+# Questo assicura che Dioxus tratti gli asset come file e non come rotte
+###base_path = "."
+[web.bundle]
+identifier = "eu.casabaldini.app"
+publisher = "Carlo"
+
+[web.app]
+
+# HTML title tag content
+title = "casabaldini"
+
+# include `assets` in web platform
+[web.resource]
+
+# Additional CSS style files
+style = []
+
+# Additional JavaScript files
+script = []
+#####[web.watcher]
+#####watch_path = ["src", "assets"]
+[web.watcher]
+# Monitoriamo SOLO la cartella src. 
+# Ignorando la radice, ignoriamo il database che fa impazzire il server.
+watch_path = ["src"]
+# Escludi esplicitamente i file sqlite
+exclude = ["*.sqlite", "*.sqlite-shm", "*.sqlite-wal"]
+[web.resource.dev]
+
+# Javascript code file
+# serve: [dev-server] only
+script = []
+
+[server]
+addr = "0.0.0.0:3000"

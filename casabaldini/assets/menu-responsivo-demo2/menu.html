@@ -1,0 +1,52 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8" /><title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+<style>
+a{text-decoration:none}
+#wrapper 	{width:100%;margin:auto;background:#fff}
+#header 	{width:100%;float:left;background:darkblue} 
+#menu		{width:100%;float:left;background:#ccc;margin-bottom:20px}
+#menu ul 		{float:left;width:100%;list-style-type:none}
+#menu ul li 	{float:left;padding-left:20px}
+#menu a 		{color:#fff;display:block;font:14px}
+#menu a:hover   {background:#666}
+#title a 	{font-size:30px;float:left;color:#fff}	
+/* Button nascosto in apertura con display:none*/
+.btn{display:none;float:right;margin-right:10px;color:#fff}
+.show{display:block!important}
+
+@media (max-width:767px) {
+#wrapper 	{width:94%;margin:auto}
+#header 	{width:94%} 
+#menu		{width:94%;float:left;display:none}
+#menu ul li {float:none;padding-left:0}
+.btn{display:block}	
+}
+</style>
+</head>
+<body>
+<div id="wrapper">
+    <header id="header">
+        <h1 id="title"><a href="#">&nbsp;Menu</a></h1>     
+        <div class="btn">&#9776;</div> 
+    </header>
+    <div id="menu">
+	 	<ul>
+        	<li><a href="#">Home</a></li>
+            <li><a href="#">Prodotti</a></li>
+            <li><a href="#">Contatti</a></li>
+        </ul> 
+	</div>
+        <h2>Menu Responsivo</h2>
+        <p>Hamburger a 768px</p>  
+</div>
+	<script src="jquery.js"></script>
+	    <script>
+    $(document).ready(function(){   
+		$(".btn").click(function() {
+			$("#menu").toggleClass("show");
+		
+		});
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+body {
+	margin: 0;
+	padding: 0;
+	background: #fdfdfd;
+}
+
+#pushobj {
+	position: absolute;
+	top: 0px;
+	left: 30%;
+	color: #500202;
+	background: #feffff;
+	font-family: 'Open Sans Condensed', sans-serif;
+	font-size: 2em;
+	z-index: 1;
+}

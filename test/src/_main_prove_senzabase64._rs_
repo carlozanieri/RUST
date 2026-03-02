@@ -1,0 +1,321 @@
+use dioxus::prelude::*;
+use serde::{Serialize, Deserialize};
+use dioxus::prelude::asset;
+use crate::document::eval;
+//use web_sys::console::count;
+
+#[cfg(not(target_arch = "wasm32"))]
+use sqlx::{SqlitePool, FromRow};
+#[derive(Debug, Clone, Routable, PartialEq)]
+#[rustfmt::skip]
+enum Route {
+    #[layout(Navbar)]
+    #[route("/")]
+    Home {},
+    #[route("/casabaldini/")]
+    Casabaldini{},
+    #[route("/blog/:id")]
+    Blog { id: i32 },
+
+}
+
+const FAVICON: Asset = asset!("/assets/favicon.ico");
+const MAIN_CSS: Asset = asset!("/assets/main.css");
+const SLIDERMIN_CSS: Asset = asset!("/assets/home/dist/css/slider-pro.min.css");
+const SLIDER_CSS: Asset = asset!("/assets/home/dist/css/slider-pro.css");
+const EXAMPLE_CSS: Asset = asset!("/assets/home/dist/css/examples.css");
+const MENU_CSS: Asset = asset!("/assets/menu_6/css/default.css");
+const HEADER_SVG: Asset = asset!("/assets/img/index/cafaggiolo.jpg");
+const TAILWIND_CSS: Asset = asset!("/assets/tailwind.css");
+const LAGO_IMG: Asset = asset!("/assets/img/index/lago.jpg");
+const JQUERY_JS: Asset = asset!("/assets/home/dist/js/jquery.sliderPro.min.js");
+//const MIO_JS: Asset = asset!("/assets/home/dist/js/mio.js");
+
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)] 
+// Questa riga dice: aggiungi FromRow solo se NON siamo su WASM
+#[cfg_attr(not(target_arch = "wasm32"), derive(sqlx::FromRow))]
+pub struct Slider {
+    pub id: i32,
+    pub img: String,
+    pub titolo: String,
+    pub testo: String,
+    pub caption: String,
+}
+
+
+fn main() {
+    // Questo è il modo più pulito in 0.7 per far funzionare tutto
+    dioxus::launch(App);
+}
+
+#[component]
+fn App() -> Element {
+    // 1. Definiamo l'effetto PRIMA del rsx!
+    rsx! {
+        document::Script { src: "https://code.jquery.com/jquery-3.6.2.min.js" }
+        document::Link { rel: "stylesheet", href: EXAMPLE_CSS }
+        document::Link { rel: "stylesheet", href: MENU_CSS }
+        document::Link { rel: "stylesheet", href: SLIDERMIN_CSS }
+        document::Link { rel: "stylesheet", href: SLIDER_CSS }
+        document::Script { src: JQUERY_JS }
+        document::Link { rel: "icon", href: FAVICON }
+        document::Link { rel: "stylesheet", href: MAIN_CSS } 
+        document::Link { rel: "stylesheet", href: TAILWIND_CSS }
+          
+        Router::<Route> {}
+    }
+}
+
+#[component]
+pub fn Hero() -> Element {
+    rsx! {
+        div {
+            id: "hero",
+            img { src: HEADER_SVG, id: "header" }
+            div { id: "links",
+                a { href: "https://dioxuslabs.com/learn/0.7/", "📚 Learn Dioxus" }
+                a { href: "https://dioxuslabs.com/awesome", "🚀 Awesome Dioxus" }
+                a { href: "https://github.com/dioxus-community/", "📡 Community Libraries" }
+                a { href: "https://github.com/DioxusLabs/sdk", "⚙️ Dioxus Development Kit" }
+                a { href: "https://marketplace.visualstudio.com/items?itemName=DioxusLabs.dioxus", "💫 VSCode Extension" }
+                a { href: "https://discord.gg/XgGxMSkvUM", "👋 Community Discord" }
+            }
+        }
+    }
+}
+
+/// Home page
+#[component]
+fn Home() -> Element {
+    rsx! {
+        Hero {}
+        Echo {}
+    }
+}
+
+/// Blog page
+#[component]
+pub fn Blog(id: i32) -> Element {
+    rsx! {
+        div {
+            id: "blog",
+
+            // Content
+            h1 { "This is blog #{id}!" }
+            p { "In blog #{id}, we show how the Dioxus router works and how URL parameters can be passed as props to our route components." }
+
+            // Navigation links
+            Link {
+                to: Route::Blog { id: id - 1 },
+                "Previous"
+            }
+            span { " <---> " }
+            Link {
+                to: Route::Blog { id: id + 1 },
+                "Next"
+            }
+        }
+    }
+}
+
+/// Shared navbar component.
+#[component]
+fn Navbar() -> Element {
+    rsx! {
+        div {
+            id: "navbar",
+            Link {
+                to: Route::Home {},
+                "Home"
+            }
+            Link {
+                to: Route::Blog { id: 1 },
+                "Blog"
+            }
+            Link {
+                to: Route::Casabaldini {  },
+                "Casabaldini"
+            }
+        }
+
+        Outlet::<Route> {}
+    }
+}
+
+/// Echo component that demonstrates fullstack server functions.
+#[component]
+fn Echo() -> Element {
+    let mut response = use_signal(|| String::new());
+
+    rsx! {
+        div {
+            id: "echo",
+            h4 { "ServerFn Echo" }
+            input {
+                placeholder: "Type here to echo...",
+                oninput:  move |event| async move {
+                    let data = echo_server(event.value()).await.unwrap();
+                    response.set(data);
+                },
+            }
+
+            if !response().is_empty() {
+                p {
+                    "Server echoed: "
+                    i { "{response}" }
+                }
+            }
+        }
+    }
+}
+// casabaldini
+#[component]
+fn Casabaldini() -> Element {
+    //let document = window().unwrap().document().unwrap();
+    let sliders = use_resource(move || get_sliders_db());
+    
+   rsx! {
+           
+     
+    
+            div { class:"slider-pro", 
+            h1 { "Galleria Dinamica Casabaldini" }
+            
+            /*p { 
+                if cfg!(target_arch = "wasm32") { 
+                    span { style: "color: green;", "✅ CLIENT ATTIVO" }
+                } else { 
+                    span { style: "color: orange;", "🏠 SERVER RENDERING" }
+                }
+            }*/
+
+            hr {}
+            ElencoSliders {}
+        }
+    }
+}
+
+/// Echo the user input on the server.
+#[post("/api/echo")]
+async fn echo_server(input: String) -> Result<String, ServerFnError> {
+    Ok(input)
+}
+
+
+// 2. LA FUNZIONE SERVER (Il ponte verso il disco)
+
+
+#[server]
+pub async fn get_sliders_db() -> Result<Vec<Slider>, ServerFnError> {
+    // Import necessari solo lato server
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        use sqlx::SqlitePool;
+        use std::fs;
+        use base64::{Engine as _, engine::general_purpose};
+
+        // 1. Connessione al pool (sqlite:nome_file)
+        let pool = SqlitePool::connect("sqlite:/home/carlo/db_remoto/casabaldini.sqlite").await
+            .map_err(|e| ServerFnError::new(format!("Errore connessione DB: {}", e)))?;
+
+        // 2. Query al database mappata sulla struct Slider
+        let mut rows: Vec<Slider> = sqlx::query_as::<_, Slider>("SELECT id, titolo, img, testo, caption FROM sliders")
+            .fetch_all(&pool)
+            .await
+            .map_err(|e| ServerFnError::new(format!("Errore query: {}", e)))?;
+
+        // 3. Trasformazione delle immagini in Base64
+        // Cicliamo ogni riga e sostituiamo il nome file con i dati reali
+        for slider in &mut rows {
+            let path = format!("assets/img/index/{}", slider.img);
+            if let Ok(bytes) = fs::read(&path) {
+                let b64 = general_purpose::STANDARD.encode(bytes);
+                slider.img = format!("data:image/jpeg;base64,{}", b64);
+            } else {
+                // Se il file non esiste, mettiamo un placeholder per non rompere il sito
+                slider.img = "https://via.placeholder.com/400?text=Immagine+Non+Trovata".to_string();
+            }
+        }
+
+        Ok(rows)
+    }
+
+    // Risposta "fantoccio" per il compilatore WASM (lato client)
+    #[cfg(target_arch = "wasm32")]
+    Ok(vec![])
+}
+#[component]
+fn ElencoSliders() -> Element {
+    let sliders_res = use_resource(move || get_sliders_db());
+
+    use_effect(move || {
+    spawn(async move {
+        let _ = eval(r#"
+            console.log("🛠 TENTATIVO DI ATTIVAZIONE...");
+            var monitor = setInterval(function() {
+                // Controlliamo se jQuery esiste PRIMA di usare $
+                if (window.jQuery && window.jQuery.fn.sliderPro) {
+                    var $ = window.jQuery; // Definiamo $ localmente per sicurezza
+                    var $slider = $('#example1');
+                    
+                    if ($slider.length > 0) {
+                        console.log("✅ JQuery e Plugin pronti! Inizializzo...");
+                        $slider.sliderPro({
+                            width: 960,
+                            height: 500,
+                            arrows: true,
+                            autoplay: true
+                        });
+                        clearInterval(monitor);
+                    }
+                } else {
+                    console.log("⏳ In attesa di jQuery e del plugin...");
+                }
+            }, 500);
+        "#);
+    });
+});;
+
+    rsx! {
+        match &*sliders_res.read_unchecked() {
+            Some(Ok(list)) => rsx! {
+                // Il contenitore principale deve avere la classe slider-pro
+                div { id: "example1", class: "slider-pro",
+                    div { class: "sp-slides",
+                        for s in list {
+                            // Ogni slide deve avere la classe sp-slide
+                            div { class: "sp-slide", key: "{s.id}",
+                                // Struttura originale dei tuoi testi
+                                h3 {class:"sp-layer sp-black sp-padding", "data-horizontal": "40","data-vertical": "10%","data-show-transition": "left","data-hide-transition": "left" , "{s.titolo}" }
+                                img { 
+    class: "sp-image", 
+    // Usiamo l'URL che punta direttamente al file nel filesystem 
+    // (funziona solo in locale/debug, ma ci serve per sbloccare lo sviluppo)
+    src: "file:///home/carlo/progetti_rust/test/assets/img/index/{s.img}", 
+    width: "250",
+}
+                                p {class:"sp-layer sp-white sp-padding hide-medium-screen", 
+					            "data-horizontal":"40", "data-vertical":"34%", 
+					            "data-show-transition":"left", "data-width":"650","data-show-delay":"400", "data-hide-transition":"left", "data-hide-delay":"500","{s.testo}"
+                                }
+                                p {class:"sp-layer sp-white sp-padding hide-medium-screen", 
+					            "data-horizontal":"40", "data-vertical":"22%", 
+					            "data-show-transition":"left", "data-show-delay":"400", "data-hide-transition":"left", "data-hide-delay":"400","{s.caption}"
+                                }
+                                h3 { "{s.testo}" }
+                            }
+                        }
+                    }
+                }
+            },
+            _ => rsx! { p { "Caricamento dati dal server..." } }
+        }
+    }
+}
+
+#[server]
+pub async fn get_image_bytes(name: String) -> Result<Vec<u8>, ServerFnError> {
+    use std::fs;
+    let path = format!("/home/carlo/progetti_rust/test/assets/img/index/{}", name);
+    fs::read(path).map_err(|e| ServerFnError::new(format!("Errore lettura file: {}", e)))
+}

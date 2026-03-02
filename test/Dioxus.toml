@@ -1,0 +1,22 @@
+[application]
+asset_dir = "assets"
+static_dir = "assets"
+[web.app]
+
+# HTML title tag content
+title = "CasaBaldini"
+
+# include `assets` in web platform
+[web.resource]
+#include = ["assets"]
+# Additional CSS style files
+style = []
+
+# Additional JavaScript files
+script = []
+
+[web.resource.dev]
+
+# Javascript code file
+# serve: [dev-server] only
+script = []

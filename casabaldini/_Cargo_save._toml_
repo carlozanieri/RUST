@@ -1,0 +1,28 @@
+
+[package]
+name = "casabaldini"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dioxus = { version = "0.7.3", features = ["fullstack"] }
+###dioxus = { version = "0.7.3", features = ["fullstack", "router", "server"] }
+###dioxus = { version = "0.7.3", features = ["fullstack", "router"] }
+dioxus-logger = "0.7.3"
+sqlx = { version = "0.8", features = ["sqlite", "runtime-tokio", "macros"] }
+base64 = "0.22"
+serde = { version = "1", features = ["derive"] }
+tokio = { version = "1", features = ["full"] }
+tracing = "0.1.44"
+axum = "=0.8.8"
+tower-http = {version = "0.6.8", features = ["fs"]}
+
+[features]
+default = ["web"]
+server = ["dioxus/fullstack", "dioxus/server", "sqlx/sqlite", "sqlx/runtime-tokio-native-tls"]
+##server = ["dioxus/axum", "sqlx/sqlite", "sqlx/runtime-tokio-native-tls"]
+web = ["dioxus/web"]
+desktop = ["dioxus/desktop"]
+mobile = ["dioxus/mobile"]
+##server = ["dioxus/server"]
+

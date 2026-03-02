@@ -1,0 +1,17 @@
+use dioxus::{fullstack::reqwest::Url, prelude::*};
+use serde::{Serialize, Deserialize};
+use dioxus::prelude::asset;
+pub const FAVICON: Asset = asset!("/assets/favicon.ico");
+pub const MAIN_CSS: Asset = asset!("/assets/css/main.css");
+pub const SLIDERMIN_CSS: Asset = asset!("/assets/home/dist/css/slider-pro.min.css");
+pub const SLIDER_CSS: Asset = asset!("/assets/home/dist/css/slider-pro.css");
+pub const EXAMPLE_CSS: Asset = asset!("/assets/home/dist/css/examples.css");
+pub const MENU_CSS: Asset = asset!("/assets/menu_6/css/default.css");
+pub const HEADER_SVG: Asset = asset!("/assets/img/index/cafaggiolo.jpg");
+pub const TAILWIND_CSS: Asset = asset!("/assets/css/tailwind.css");
+pub const JQUERY_JS: Asset = asset!("/assets/home/dist/js/jquery.sliderPro.min.js");
+pub const DB_URL: &str = "postgres://carlo:treX39@57.131.31.228:5432/casabaldini";
+pub const POPIN_CSS: Asset = asset!("/assets/css/popin.css");
+pub const TEL_JPG: Asset = asset!("/assets/img/telefono_4.jpg"); 
+pub const MAIL_JPG: Asset = asset!("/assets/img/email_3.jpg");
+ pub const CLESSIDRA: Asset = asset!("/assets/clessidra.gif");   

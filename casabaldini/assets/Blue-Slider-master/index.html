@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  {% load static %}	
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Blue-Slider is a responsive slider jquery plugin with great customization</title>
+</head>
+
+<link rel="stylesheet" href="{% static 'beb/Blue-Slider-master/css/blue-slider.min.css'%}">
+<link rel="stylesheet" href="{% static 'beb/Blue-Slider-master/css/fontello.css'%}">
+<link rel="stylesheet" href="{% static 'beb/Blue-Slider/css/style.min.css'%}">
+
+<body>
+  <h1 class="page-title">Blue-Slider is a responsive slider jquery plugin with great customization</h1>
+  <h2 class="sample-title">First Sample: Hero Image Slider</h2>
+  
+    <div class="slider-container first-sample">
+     
+    <div class="slider">
+      {% for sliders in slider %}     
+      <img style= "position: relative; "  src= "{% static 'beb/img/'%}{{luogo}}/{{sliders.img}}" alt="" title="{{sliders.caption}}" />
+      {% endfor %}      
+    </div>
+   
+    <i class="left-open-big-icon prev-slide"></i>
+    <i class="right-open-big-icon next-slide"></i>
+    </div>
+   
+
+  <script src="{% static 'beb/Blue-Slider-master/js/jquery-3.3.1.min.js'%}"></script>
+  <script src="{% static 'beb/Blue-Slider-master/js/blue-slider.js'%}"></script>
+  <script src="{% static 'beb/Blue-Slider-master/js/script.js'%}"></script>
+</body>
+
+</html>
