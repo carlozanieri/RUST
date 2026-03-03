@@ -14,6 +14,12 @@ pub struct Slider {
     pub caption: String,
 }
 
+#[derive(serde::Serialize)]
+pub struct FullMenu {
+    pub parent: Menus,
+    pub children: Vec<Submenus>,
+}
+
 #[tokio::main]
 async fn main() {
     let db_url = "postgres://carlo:treX39@57.131.31.228:5432/casabaldini";
@@ -50,4 +56,22 @@ async fn get_sliders(State(pool): State<PgPool>) -> Result<Json<Vec<Slider>>, (a
         .map_err(|e| (axum::http::StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
 
     Ok(Json(res))
+}
+
+pub async fn get_api_menu(pool: web::Data<PgPool>) -> impl Responder {
+    let parents = sqlx::query_as::<_, Menus>("SELECT id, codice, radice, livello, titolo, link, ordine FROM menu WHERE livello=2 AND attivo=1 ORDER BY ordine")
+        .fetch_all(pool.get_ref()).await.unwrap_or_default();
+
+    let all_sub = sqlx::query_as::<_, Submenus>("SELECT id, codice, radice, livello, titolo, link, ordine FROM submenu WHERE attivo=1 ORDER BY ordine")
+        .fetch_all(pool.get_ref()).await.unwrap_or_default();
+
+    let mut response = Vec::new();
+    for p in parents {
+        let figli: Vec<Submenus> = all_sub.iter()
+            .filter(|s| s.radice.trim() == p.codice.trim())
+            .cloned()
+            .collect();
+        response.push(FullMenu { parent: p, children: figli });
+    }
+    HttpResponse::Ok().json(response)
 }

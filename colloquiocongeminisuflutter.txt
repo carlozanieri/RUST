@@ -1,0 +1,213 @@
+Prima di proseguire con la creazione del menu dinamico, ti aggiorno su alcuni passaggi che ho fatto:
+1) sul server remoto ho installato i certificati necessari all'utilizzo del protocollo https:// . Adesso la procedura rust risponde all'indirizzo https://json.casabaldini.eu
+
+2) Ho generato il file .apk ed ho installato l'App casabaldini sul mio smarphone.
+
+3)installazione ok ma c'è un problema: all'avvio dell'App appare questo errore:
+
+-rrore: Errore di rete: Ullenttxception WI socKetException:
+Failed host lookup: 'json.casabaldini.eu' (0S Error: No address
+associated with hostname, errno - 7), urizhttps//
+son.casabaldini.eu/api/v1/slider
+
+
+Aspetta, ragioniamo un attimo:
+
+quello che mi passi non può funzionare come menu, propongo un percorso:
+
+1)ti invio la le stuct ed il codice con il quale costruiamo il menu nell'applicazione web.
+
+2) replichiamo il tutto in flutter e nell'applicazione rust che crea l'api con json.
+
+
+
+Dal progetto web casabaldini
+
+pub struct Menus {
+	pub id:       i64,
+	pub codice:   String,
+	pub radice:   String,
+	pub livello:  i64,
+	pub titolo:   String,
+	pub link:     String,
+    pub ordine:   i64,
+
+}
+
+#[derive(Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[cfg_attr(not(target_arch = "wasm32"), derive(sqlx::FromRow))]
+pub struct Submenus{
+	pub id:       i64,
+	pub codice:   String,
+	pub radice:   String,
+	pub livello:  i64,
+	pub titolo:   String,
+	pub link:     String,
+    pub ordine:   i64,
+
+}
+
+
+pub async fn get_menu_db() -> Result<Vec<Menus>, ServerFnError> {
+    // Trasformiamo l'errore di connessione e di query in stringhe leggibili da ServerFnError
+    let pool = PgPool::connect(crate::config::DB_URL)
+        .await
+        .map_err(|e| ServerFnError::new(format!("Errore connessione DB: {}", e)))?;
+
+    let mrows = sqlx::query_as::<_, Menus>("SELECT id, codice,  radice,livello,titolo,link, ordine FROM menu where livello=2 and attivo= 1 order by ordine")
+        .fetch_all(&pool)
+        .await
+        .map_err(|e| ServerFnError::new(format!("Errore query: {}", e)))?;
+    println!("📡 Server: Row recuperate, invio in corso...");
+    Ok(mrows)
+}
+
+#[server]
+pub async fn get_submenu_db() -> Result<Vec<Submenus>, ServerFnError> {
+    // Trasformiamo l'errore di connessione e di query in stringhe leggibili da ServerFnError
+    let pools = PgPool::connect(crate::config::DB_URL)
+        .await
+        .map_err(|e| ServerFnError::new(format!("Errore connessione DB: {}", e)))?;
+
+    let srows = sqlx::query_as::<_, Submenus>("SELECT id, codice,  radice, livello, titolo,link, ordine FROM submenu where attivo = 1 order by ordine")
+        .fetch_all(&pools)
+        .await
+        .map_err(|e| ServerFnError::new(format!("Errore query: {}", e)))?;
+    println!("📡 Server: Row recuperate, invio in corso...");
+    Ok(srows)
+}
+
+
+-------------  navitems.rs --------------------
+
+use crate::prelude::*;
+#[derive(Props, Clone, PartialEq)]
+pub struct NavItemProps {
+    pub m: Menus,
+    pub subitems: Vec<Submenus>,
+}
+pub fn NavItem(props: NavItemProps) -> Element {
+    let mut is_open = use_signal(|| false);
+    let route: Route = use_route();
+
+    // 1. Normalizziamo il path corrente (es. "/casabaldini")
+    let current_path = route.to_string();
+
+    // 2. Funzione di utilità per confrontare i link in modo flessibile
+    let check_active = |link: &str| {
+        // Rimuoviamo gli slash iniziali da entrambi per un confronto pulito
+        let clean_current = current_path.trim_start_matches('/');
+        let clean_link = link.trim_start_matches('/');
+        !clean_link.is_empty() && clean_current == clean_link
+    };
+
+    // 3. Logica per il Titolo Principale (Padre)
+    let is_parent_active = props.subitems.iter().any(|s| check_active(&s.link));
+
+    let parent_style = if is_parent_active {
+        "text-decoration: none; color: #ff0000; font-weight: bold;"
+    } else {
+        "text-decoration: none; color: inherit; font-weight: bold;"
+    };
+
+    rsx! {
+        li {
+            style: "position: relative; list-style: none; display: inline-block; margin-right: 20px;",
+            onmouseenter: move |_| is_open.set(true),
+            onmouseleave: move |_| is_open.set(false),
+
+            a {
+                href: "javascript:;",
+                style: "{parent_style}",
+                "{props.m.titolo}"
+            }
+
+            if is_open() && !props.subitems.is_empty() {
+                ul {
+                    style: "position: absolute; background: white; border: 1px solid #ccc; z-index: 100; padding: 10px; margin: 0; min-width: 150px;",
+                    for s in props.subitems.iter() {
+                        li {
+                            key: "{s.id}",
+                            style: "list-style: none; padding: 5px 0;",
+                            a {
+                                href: s.link.clone(),
+                                style: if check_active(&s.link) {
+                                    "text-decoration: none; color: #ff0000; display: block; font-weight: bold;"
+                                } else {
+                                    "text-decoration: none; color: #333; display: block;"
+                                },
+                                "{s.titolo}"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+--------navbar.rs -------------
+
+use dioxus::prelude::*;
+use crate::models::{Menus, Submenus};
+use crate::components::nav_item::NavItem;
+use crate::models::get_menu_db;
+use crate::models::get_submenu_db;
+use crate::Route; // Se usi le rotte per i link, servirà anche questo
+#[component]
+pub fn Navbar() -> Element {
+    let menu_res = use_resource(move || get_menu_db());
+    let submenu_res = use_resource(move || get_submenu_db());
+
+    // Stato per l'apertura su mobile\
+    let mut is_open = use_signal(|| false);
+
+    rsx! {
+        div { class: "sp-menu",
+            // Il bottone ora ha un evento onclick Rust
+            div {
+                class: "menu-toggle",
+                style: "position: absolute; top: -20px;",
+                button {
+                    r#type: "button",
+                    id: "menu-btn",
+                    onclick: move |_| is_open.toggle(), // Inverte lo stato vero/falso
+                    span { class: "icon-bar" }
+                    span { class: "icon-bar" }
+                    span { class: "icon-bar" }
+                }
+            }
+
+            // Applichiamo la classe "show" se is_open è vero
+            ul {
+                id: "respMenu",
+                class: if is_open() { "dioxus-menu show" } else { "dioxus-menu" },
+
+                match (&*menu_res.read_unchecked(), &*submenu_res.read_unchecked()) {
+                    (Some(Ok(parents)), Some(Ok(all_subitems))) => {
+                        rsx! {
+                            for m in parents {
+                                {
+                                    let figli = all_subitems
+                                        .iter()
+                                        .filter(|s| s.radice.trim() == m.codice.trim())
+                                        .cloned()
+                                        .collect::<Vec<Submenus>>();
+                                    rsx! {
+                                        NavItem { key: "{m.id}", m: m.clone(), subitems: figli }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    _ => rsx! {
+                        li { "Caricamento..." }
+                    },
+                }
+            }
+        }
+        Outlet::<Route> {}
+    }
+}
