@@ -4,7 +4,7 @@ use sqlx::PgPool;
 use serde::{Serialize, Deserialize};
 use tower_http::cors::CorsLayer;
 use tower_http::services::ServeDir; // <--- Aggiunto questo
-
+use axum::response::IntoResponse;
 #[derive(Serialize, Deserialize, Debug, sqlx::FromRow)]
 pub struct Slider {
     pub id: i64,
@@ -13,7 +13,27 @@ pub struct Slider {
     pub testo: String,
     pub caption: String,
 }
+#[derive(Debug, Serialize, Deserialize, sqlx::FromRow, Clone)]
+pub struct Menus {
+    pub id: i64,
+    pub codice: String,
+    pub radice: String,
+    pub livello: i64,
+    pub titolo: String,
+    pub link: String,
+    pub ordine: i64,
+}
 
+#[derive(Debug, Serialize, Deserialize, sqlx::FromRow, Clone)]
+pub struct Submenus {
+    pub id: i64,
+    pub codice: String,
+    pub radice: String,
+    pub livello: i64,
+    pub titolo: String,
+    pub link: String,
+    pub ordine: i64,
+}
 #[derive(serde::Serialize)]
 pub struct FullMenu {
     pub parent: Menus,
@@ -36,6 +56,7 @@ async fn main() {
 
     let app = Router::new()
         .route("/api/v1/slider", get(get_sliders))
+        .route("/api/v1/menu", get(get_api_menu))
         // Questa riga dice: "Tutto ciò che arriva a /static, cercalo nella cartella static"
         .nest_service("/static", static_files_service) 
         .layer(CorsLayer::permissive())
@@ -58,20 +79,35 @@ async fn get_sliders(State(pool): State<PgPool>) -> Result<Json<Vec<Slider>>, (a
     Ok(Json(res))
 }
 
-pub async fn get_api_menu(pool: web::Data<PgPool>) -> impl Responder {
-    let parents = sqlx::query_as::<_, Menus>("SELECT id, codice, radice, livello, titolo, link, ordine FROM menu WHERE livello=2 AND attivo=1 ORDER BY ordine")
-        .fetch_all(pool.get_ref()).await.unwrap_or_default();
+pub async fn get_api_menu(State(pool): State<PgPool>) -> impl IntoResponse {
+    let parents = sqlx::query_as::<_, Menus>(
+        "SELECT id, codice, radice, livello, titolo, link, ordine FROM menu WHERE livello=2 AND attivo=1 ORDER BY ordine"
+    )
+    .fetch_all(&pool)
+    .await
+    .unwrap_or_default();
 
-    let all_sub = sqlx::query_as::<_, Submenus>("SELECT id, codice, radice, livello, titolo, link, ordine FROM submenu WHERE attivo=1 ORDER BY ordine")
-        .fetch_all(pool.get_ref()).await.unwrap_or_default();
+    let all_sub = sqlx::query_as::<_, Submenus>(
+        "SELECT id, codice, radice, livello, titolo, link, ordine FROM submenu WHERE attivo=1 ORDER BY ordine"
+    )
+    .fetch_all(&pool)
+    .await
+    .unwrap_or_default();
 
     let mut response = Vec::new();
     for p in parents {
-        let figli: Vec<Submenus> = all_sub.iter()
+        let figli: Vec<Submenus> = all_sub
+            .iter()
             .filter(|s| s.radice.trim() == p.codice.trim())
             .cloned()
             .collect();
-        response.push(FullMenu { parent: p, children: figli });
+            
+        response.push(FullMenu {
+            parent: p,
+            children: figli,
+        });
     }
-    HttpResponse::Ok().json(response)
+
+    // In Axum restituiamo semplicemente una tupla o un oggetto Json
+    Json(response)
 }
