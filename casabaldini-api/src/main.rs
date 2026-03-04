@@ -83,14 +83,14 @@ async fn get_sliders(State(pool): State<PgPool>) -> Result<Json<Vec<Slider>>, (a
 
 pub async fn get_api_menu(State(pool): State<PgPool>) -> impl IntoResponse {
     let parents = sqlx::query_as::<_, Menus>(
-        "SELECT id, codice, radice, livello, titolo, link, ordine FROM menu WHERE livello=2 AND attivo=1 ORDER BY ordine"
+        "SELECT id, codice, radice, livello, titolo, link, ordine,tipopage FROM menu WHERE livello=2 AND attivo=1 ORDER BY ordine"
     )
     .fetch_all(&pool)
     .await
     .unwrap_or_default();
 
     let all_sub = sqlx::query_as::<_, Submenus>(
-        "SELECT id, codice, radice, livello, titolo, link, ordine FROM submenu WHERE attivo=1 ORDER BY ordine"
+        "SELECT id, codice, radice, livello, titolo, link, ordine, tipopage FROM submenu WHERE attivo=1 ORDER BY ordine"
     )
     .fetch_all(&pool)
     .await
