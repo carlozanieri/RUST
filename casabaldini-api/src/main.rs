@@ -22,6 +22,7 @@ pub struct Menus {
     pub titolo: String,
     pub link: String,
     pub ordine: i64,
+    pub tipopage: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, sqlx::FromRow, Clone)]
@@ -33,6 +34,7 @@ pub struct Submenus {
     pub titolo: String,
     pub link: String,
     pub ordine: i64,
+    pub tipopage: String,
 }
 #[derive(serde::Serialize)]
 pub struct FullMenu {
