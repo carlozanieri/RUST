@@ -42,10 +42,12 @@ pub struct FullMenu {
     pub parent: Menus,
     pub children: Vec<Submenus>,
 }
+
 #[derive(serde::Deserialize)]
 pub struct SliderParams {
-    pub dir: String,
+    pub dir: Option<String>, // Usiamo Option per sicurezza se manca il parametro
 }
+
 #[tokio::main]
 async fn main() {
     let db_url = "postgres://carlo:treX39@57.131.31.228:5432/casabaldini";
@@ -120,11 +122,12 @@ pub async fn get_api_menu(State(pool): State<PgPool>) -> impl IntoResponse {
 
 pub async fn get_api_sliders(
     State(pool): State<PgPool>,
-    Query(params): Query<SliderParams>, // Legge ?dir=xxx dall'URL
+    Query(params): Query<SliderParams>,
 ) -> impl IntoResponse {
-    let dir = params.dir;
+    // Se dir manca, usiamo "index" come default
+    let dir = params.dir.unwrap_or_else(|| "index".to_string());
     
-    // Logica identica alla tua: se "index" cerca su 'codice', altrimenti su 'codice2'
+    // Logica: se dir è "index" usa 'codice', altrimenti 'codice2'
     let query = if dir == "index" {
         "SELECT id, titolo, img, testo, caption FROM sliders WHERE codice = $1"
     } else {
