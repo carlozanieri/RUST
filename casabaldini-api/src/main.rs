@@ -1,10 +1,11 @@
-use axum::{routing::get, extract::State, Json, Router};
+use axum::{routing::get, extract::{State, Query}, Json, Router};
 use sqlx::postgres::PgPoolOptions;
 use sqlx::PgPool;
 use serde::{Serialize, Deserialize};
 use tower_http::cors::CorsLayer;
 use tower_http::services::ServeDir; // <--- Aggiunto questo
 use axum::response::IntoResponse;
+//use axum::extract::{State, Query};
 #[derive(Serialize, Deserialize, Debug, sqlx::FromRow)]
 pub struct Slider {
     pub id: i64,
@@ -41,7 +42,10 @@ pub struct FullMenu {
     pub parent: Menus,
     pub children: Vec<Submenus>,
 }
-
+#[derive(serde::Deserialize)]
+pub struct SliderParams {
+    pub dir: String,
+}
 #[tokio::main]
 async fn main() {
     let db_url = "postgres://carlo:treX39@57.131.31.228:5432/casabaldini";
@@ -112,4 +116,26 @@ pub async fn get_api_menu(State(pool): State<PgPool>) -> impl IntoResponse {
 
     // In Axum restituiamo semplicemente una tupla o un oggetto Json
     Json(response)
+}
+
+pub async fn get_api_sliders(
+    State(pool): State<PgPool>,
+    Query(params): Query<SliderParams>, // Legge ?dir=xxx dall'URL
+) -> impl IntoResponse {
+    let dir = params.dir;
+    
+    // Logica identica alla tua: se "index" cerca su 'codice', altrimenti su 'codice2'
+    let query = if dir == "index" {
+        "SELECT id, titolo, img, testo, caption FROM sliders WHERE codice = $1"
+    } else {
+        "SELECT id, titolo, img, testo, caption FROM sliders WHERE codice2 = $1"
+    };
+
+    let srows = sqlx::query_as::<_, Slider>(query)
+        .bind(&dir)
+        .fetch_all(&pool)
+        .await
+        .unwrap_or_default();
+
+    Json(srows)
 }
