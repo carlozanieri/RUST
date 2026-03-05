@@ -63,7 +63,7 @@ async fn main() {
     let static_files_service = ServeDir::new("static");
 
     let app = Router::new()
-        .route("/api/v1/slider", get(get_sliders))
+        .route("/api/v1/slider", get(get_api_sliders))
         .route("/api/v1/menu", get(get_api_menu))
         // Questa riga dice: "Tutto ciò che arriva a /static, cercalo nella cartella static"
         .nest_service("/static", static_files_service) 
