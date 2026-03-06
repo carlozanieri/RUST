@@ -57,6 +57,18 @@ pub struct Foods {
 	pub apiedi:   String,
 	
 }
+#[derive(Debug, Serialize, Deserialize, sqlx::FromRow, Clone)]
+pub struct Links {
+	pub id:       i64,
+	pub codice:   String,
+	pub img:      String,
+	pub titolo:   String,
+    pub descrizione:     String,
+	pub link:     String,
+    pub height:   String,
+    pub width:   String,
+	
+}
 
 #[derive(serde::Deserialize)]
 pub struct SliderParams {
@@ -81,6 +93,7 @@ async fn main() {
         .route("/api/v1/slider", get(get_api_sliders))
         .route("/api/v1/menu", get(get_api_menu))
         .route("/api/v1/foods", get(get_api_food))
+        .route("/api/v1/linkss", get(get_api_links))
         // Questa riga dice: "Tutto ciò che arriva a /static, cercalo nella cartella static"
         .nest_service("/static", static_files_service) 
         .layer(CorsLayer::permissive())
@@ -161,6 +174,16 @@ pub async fn get_api_sliders(
 pub async fn get_api_food(State(pool): State<PgPool>) -> Result<Json<Vec<Foods>>, (axum::http::StatusCode, String)> {
     // Nota: Ho aggiunto 'img' nella query perché il tuo modello Rust lo richiede
     let res = sqlx::query_as::<_, Foods>("SELECT id, codice, img,titolo,descrizione,link,  width, height, indirizzo, telefono, apiedi FROM food ")
+        .fetch_all(&pool)
+        .await
+        .map_err(|e| (axum::http::StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+
+    Ok(Json(res))
+}
+
+pub async fn get_api_links(State(pool): State<PgPool>) -> Result<Json<Vec<Links>>, (axum::http::StatusCode, String)> {
+    // Nota: Ho aggiunto 'img' nella query perché il tuo modello Rust lo richiede
+    let res = sqlx::query_as::<_, Links>("SELECT id, codice, img,titolo,descrizione,link, height, width FROM links ")
         .fetch_all(&pool)
         .await
         .map_err(|e| (axum::http::StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
