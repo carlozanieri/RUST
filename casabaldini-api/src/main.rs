@@ -42,6 +42,21 @@ pub struct FullMenu {
     pub parent: Menus,
     pub children: Vec<Submenus>,
 }
+#[derive(Debug, Serialize, Deserialize, sqlx::FromRow, Clone)]
+pub struct Foods {
+	pub id:       i64,
+	pub codice:   String,
+	pub img:      String,
+	pub titolo:   String,
+    pub descrizione:     String,
+	pub link:     String,
+    pub width:   String,
+    pub height:   String,
+    pub indirizzo:   String,
+	pub telefono:    String,
+	pub apiedi:   String,
+	
+}
 
 #[derive(serde::Deserialize)]
 pub struct SliderParams {
@@ -65,11 +80,11 @@ async fn main() {
     let app = Router::new()
         .route("/api/v1/slider", get(get_api_sliders))
         .route("/api/v1/menu", get(get_api_menu))
+        .route("/api/v1/foods", get(get_api_food))
         // Questa riga dice: "Tutto ciò che arriva a /static, cercalo nella cartella static"
         .nest_service("/static", static_files_service) 
         .layer(CorsLayer::permissive())
         .with_state(pool);
-
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3333").await.unwrap();
     println!("🚀 API Mobile partita su http://json.casabaldini.eu");
     println!("📂 Immagini servite su http://json.casabaldini.eu/static/img/index/");
@@ -141,4 +156,14 @@ pub async fn get_api_sliders(
         .unwrap_or_default();
 
     Json(srows)
+}
+
+pub async fn get_api_food(State(pool): State<PgPool>) -> Result<Json<Vec<Foods>>, (axum::http::StatusCode, String)> {
+    // Nota: Ho aggiunto 'img' nella query perché il tuo modello Rust lo richiede
+    let res = sqlx::query_as::<_, Foods>("SELECT id, codice, img,titolo,descrizione,link,  width, height, indirizzo, telefono, apiedi FROM food ")
+        .fetch_all(&pool)
+        .await
+        .map_err(|e| (axum::http::StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+
+    Ok(Json(res))
 }
