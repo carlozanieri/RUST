@@ -93,7 +93,7 @@ async fn main() {
         .route("/api/v1/slider", get(get_api_sliders))
         .route("/api/v1/menu", get(get_api_menu))
         .route("/api/v1/foods", get(get_api_food))
-        .route("/api/v1/linkss", get(get_api_links))
+        .route("/api/v1/links", get(get_api_links))
         // Questa riga dice: "Tutto ciò che arriva a /static, cercalo nella cartella static"
         .nest_service("/static", static_files_service) 
         .layer(CorsLayer::permissive())
